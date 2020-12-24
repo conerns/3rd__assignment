@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<title>Squadre</title> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<nav class="navbar navbar-light bg-light">
+	  <div class="container-fluid">
+	    <span class="navbar-brand mb-0 h1">Majors</span>
+	  </div>
+	  <form class="container-fluid">
+	    <div class="input-group">
+	      <span class="input-group-text" id="basic-addon1">@</span>
+	      <input type="text" class="form-control" placeholder="Cerca Majors" aria-label="Username" aria-describedby="basic-addon1">
+	    </div>
+ 	 </form>
+	</nav>
+	<table  class="table table-striped table-bordered" style="text-align:center">
+		<thead >
+			<th scope="col">Organizzatore evento</th>			
+			<th scope="col">Montepremi</th>
+			<th scope="col">Paese di svolgimento</th>	
+		</thead>
+		<tbody>
+			<tr scope = "row" th:each="major : ${majors}" >
+				<td th:text="${major.organizzatore}" style="text-align:center"></td>			
+				<td th:text="${major.montepremi}"></td>				
+				<td th:text="${major.paeseSvolgimento}"</td>		
+			</tr>
+		</tbody>
+	</table>
+	<!-- Footer -->
+	<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
+		<nav class="navbar navbar-light bg-light">
+	  		<div class="container-fluid">
+	    <a class="navbar-brand" th:href="@{/}">Home</a>
+	  </div>
+	</nav>
+	</footer>
+	<!-- Footer -->
+</body>
+</html>

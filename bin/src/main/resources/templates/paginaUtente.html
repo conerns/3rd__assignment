@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<title>Squadre</title> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<nav class="navbar navbar-light bg-light">
+	  <div class="container-fluid">
+	    <span class="navbar-brand mb-0 h1">Profilo Utente</span>
+	  </div>
+	</nav>
+	<div class="card text-center">
+	  <div class="card-header">
+	    
+	  </div>
+	  <div class="card-body">
+	    <h5 class="card-title" th:text="${singoloUtente.nikname}"></h5>
+	    <hr>
+	    	<p class="card-text">Anagrafica</p>
+	    <hr>
+		    Nome : <span th:text=${singoloUtente.nome}></span> <br>
+		    Cognome : <span th:text=${singoloUtente.cognome}></span> 
+	    </br>	
+	    <hr>
+	    <p class="card-text">Amici</p>
+	    <span th:each="amico, iterStat : ${singoloUtente.getAmici()}">
+			<a th:href="@{/giocatore/{playerId}(playerId=${amico.getId()})}"/><span th:text="${amico.getNikname()}"></span></a>
+			<th:block th:if="${!iterStat.last}">,</th:block>
+		</span>
+	    <hr>   
+	  </div>
+	  <div class="card-footer text-muted">
+	      <a th:href="@{/squadre}" class="btn btn-primary">Torna alle squadre</a>	      
+	  </div>
+	</div>
+	<
+	<!-- Footer -->
+	<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
+		<nav class="navbar navbar-light bg-light">
+	  		<div class="container-fluid">
+	    <a class="navbar-brand" th:href="@{/}">Home</a>
+	    <button type="button" class="btn btn-light"><a th:href="@{/modificaGiocatore/{playerId}(playerId=${singoloUtente.id})}">Modifica profilo</a></button>
+	  </div>
+	</nav>
+	</footer>
+	<!-- Footer -->
+</body>
+</html>
