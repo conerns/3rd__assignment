@@ -1,0 +1,53 @@
+package assignment3.videoGames.assignment3.Model;
+
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
+public class TorneoModel {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+	private String nomeTorneo; 
+	@OneToOne
+	private SquadraModel vincitrice;
+	@OneToMany
+	List <PartitaModel> partiteTorneo;
+	
+	public TorneoModel() {
+		super();
+	}
+	public TorneoModel(String nomeTorneo, List<PartitaModel> partiteTorneo) {
+		super();
+		this.nomeTorneo = nomeTorneo;
+		this.partiteTorneo = partiteTorneo;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getNomeTorneo() {
+		return nomeTorneo;
+	}
+	public void setNomeTorneo(String nomeTorneo) {
+		this.nomeTorneo = nomeTorneo;
+	}
+	public List<PartitaModel> getPartiteTorneo() {
+		return partiteTorneo;
+	}
+	public void setPartiteTorneo(List<PartitaModel> partiteTorneo) {
+		this.partiteTorneo = partiteTorneo;
+	}
+	public SquadraModel getVincitrice() {
+		return vincitrice;
+	}
+	
+}
