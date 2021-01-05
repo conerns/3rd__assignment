@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 public class SquadraModel {
@@ -16,8 +18,10 @@ public class SquadraModel {
 	private long id;
 	private String nomeSquadra;
 	private String giocoSquadra;	 
-	@ManyToMany
+	
+	@OneToMany
 	private List<GiocatoreModel> componenti;
+	
 	public SquadraModel() {
 		super();		
 	}
@@ -29,7 +33,7 @@ public class SquadraModel {
 		super();
 		this.nomeSquadra = nomeSquadra;
 		this.giocoSquadra = giocoSquadra;
-		this.componenti = componenti;
+		this.componenti = componenti;		
 	}
 	public List<GiocatoreModel> getComponenti() {
 		return componenti;
@@ -44,10 +48,13 @@ public class SquadraModel {
 		return nomeSquadra;
 	}
 	public void setComponenti(List<GiocatoreModel> componenti) {
+		for(GiocatoreModel g : componenti)
+			g.setSquadra(this);
 		this.componenti = componenti;
 	}
 	public void setGiocoSquadra(String giocoSquadra) {
 		this.giocoSquadra = giocoSquadra;
+		
 	}
 	public void setId(long id) {
 		this.id = id;

@@ -9,7 +9,7 @@
 <body>
 	<nav class="navbar navbar-light bg-light">
 	  <div class="container-fluid">
-	    <span class="navbar-brand mb-0 h1">Profilo Utente</span>
+	    <span class="navbar-brand mb-0 h1">Profilo Squadra</span>
 	  </div>
 	</nav>
 	
@@ -17,18 +17,17 @@
 	  <div class="card-header">	    
 	  </div>
 	  <div class="card-body">
-	    <h5 class="card-title" th:text="${singoloUtente.nikname}"></h5>
+	    <h5 class="card-title" th:text="${singolaSquadra.nomeSquadra}"></h5>
 	    <hr>
-	    	<p class="card-text">Anagrafica</p>
+	    	<p class="card-text">Informazioni</p>
 	    <hr>
-		    Nome : <span th:text=${singoloUtente.nome}></span> <br>
-		    Cognome : <span th:text=${singoloUtente.cognome}></span> 
+		    Videogioco : <span th:text=${singolaSquadra.giocoSquadra}></span> <br>
 	    </br>	
 	    <hr>
-	    <p class="card-text">Amici</p>
-	    <span th:each="amico, iterStat : ${singoloUtente.getAmici()}">
-			<a th:href="@{/giocatore/{playerId}(playerId=${amico.getId()})}"/><span th:text="${amico.getNikname()}"></span></a>
-			<th:block th:if="${!iterStat.last}">,</th:block>
+	    <p class="card-text">Componenti</p>
+    	<span th:each="componente, iterStat : ${singolaSquadra.componenti}">
+			<a th:href="@{/giocatore/{playerId}(playerId=${componente.id})}"/><span th:text="${componente.nikname}"></span></a>
+				<th:block th:if="${!iterStat.last}">,</th:block>
 		</span>
 	    <hr>   
 	  </div>
@@ -42,8 +41,8 @@
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
 	    <a class="navbar-brand" th:href="@{/}">Home</a>
-	    <button type="button" class="btn btn-light"><a th:href="@{/eliminaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="get">Elimina giocatore</a>
-	    <button type="button" class="btn btn-light"><a th:href="@{/modificaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="post">Modifica profilo</a></button>
+	   <!-- <button type="button" class="btn btn-light"><a th:href="@{/eliminaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="get">Elimina giocatore</a>
+	    <button type="button" class="btn btn-light"><a th:href="@{/modificaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="post">Modifica profilo</a></button> -->
 	  </div>
 	</nav>
 	</footer>

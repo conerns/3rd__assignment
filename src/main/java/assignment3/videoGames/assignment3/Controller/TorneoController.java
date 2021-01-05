@@ -31,6 +31,7 @@ public class TorneoController {
 		model.addAttribute("listaTornei", cupRepo.findAll());
 		return "tornei";
 	}
+	
 	@RequestMapping(value="/torneo/{id}/partite",method=RequestMethod.GET)
 	public String partiteTorneiRepository(@PathVariable Long id , Model model) {
 		model.addAttribute("partiteTorneo", cupRepo.findById(id).orElse(null));

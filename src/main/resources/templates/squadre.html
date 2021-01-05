@@ -23,10 +23,11 @@
 			<th scope="col">Squadra</th>			
 			<th scope="col">Gioco</th>
 			<th scope="col">Componenti squadra</th>
+			<th scope="col">Tipologia</th>
 		</thead>
 		<tbody>
 			<tr scope = "row" th:each="squadra : ${squadre}" >
-				<td th:text="${squadra.nomeSquadra}"></td>
+				<td > <a th:href="@{/squadra/{teamId}(teamId=${squadra.id})}"/><span th:text="${squadra.nomeSquadra}"></span></a></td>
 				<td th:text="${squadra.giocoSquadra}"></td>
 				<td >
 					<span th:each="componente, iterStat : ${squadra.componenti}">
@@ -34,6 +35,18 @@
 						<th:block th:if="${!iterStat.last}">,</th:block>
 					</span>
 				</td>
+				<td>Professionisti</td>
+			</tr>
+			<tr scope = "row" th:each="squadra : ${squadreAmm}" >
+				<td > <a th:href="@{/squadra/{teamId}(teamId=${squadra.id})}"/><span th:text="${squadra.nomeSquadra}"></span></a></td>
+				<td th:text="${squadra.giocoSquadra}"></td>
+				<td >
+					<span th:each="componente, iterStat : ${squadra.componenti}">
+						<a th:href="@{/giocatore/{playerId}(playerId=${componente.id})}"/><span th:text="${componente.nikname}"></span></a>
+						<th:block th:if="${!iterStat.last}">,</th:block>
+					</span>
+				</td>
+				<td>Amatoriali</td>
 			</tr>
 		</tbody>
 	</table>

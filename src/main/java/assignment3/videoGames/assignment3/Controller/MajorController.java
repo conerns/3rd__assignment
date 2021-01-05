@@ -18,7 +18,7 @@ public class MajorController {
 	MajorRespository majorRepo;
 	@RequestMapping(value="/majors",method=RequestMethod.GET)
 	public String teamRepository(Model model) {
-		model.addAttribute("majors", majorRepo.findAll());
+		model.addAttribute("majors", majorRepo.findAll());		
 		return "majors";
 	}
 	

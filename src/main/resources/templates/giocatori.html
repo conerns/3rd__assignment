@@ -9,26 +9,28 @@
 <body>
 	<nav class="navbar navbar-light bg-light">
 	  <div class="container-fluid">
-	    <span class="navbar-brand mb-0 h1">Storico partite <b th:text = "${partiteTorneo.nomeTorneo}"></b></span>
+	    <span class="navbar-brand mb-0 h1">Giocatori</span>
 	  </div>
 	  <form class="container-fluid">
 	    <div class="input-group">
 	      <span class="input-group-text" id="basic-addon1">@</span>
-	      <input type="text" class="form-control" placeholder="Cerca Torneo" aria-label="Username" aria-describedby="basic-addon1">
+	      <input type="text" class="form-control" placeholder="Cerca Giocatore" aria-label="Username" aria-describedby="basic-addon1">
 	    </div>
  	 </form>
 	</nav>
 	<table  class="table table-striped table-bordered " style="text-align:center">
 		<thead>
-			<th scope="col">Home</th>			
-			<th scope="col">Visitors</th>
-			<th scope="col">Punteggio</th>
+			<th scope="col">nikname</th>			
+			<th scope="col">Nome</th>
+			<th scope="col">Cognome</th>
+			<th scope="col">Squadra</th>
 		</thead>
 		<tbody>
-			<tr scope = "row" th:each="partita : ${partiteTorneo.getPartiteTorneo()}" >
-				<td > <a th:href="@{/squadra/{teamId}(teamId=${partita.home.id})}"/><span th:text="${partita.home.nomeSquadra}"></span></a></td>
-				<td > <a th:href="@{/squadra/{teamId}(teamId=${partita.against.id})}"/><span th:text="${partita.against.nomeSquadra}"></span></a></td>
-				<td th:text="${partita.homeRounds + '-' + partita.againstRounds}"></td>				
+			<tr scope = "row" th:each="giocatore : ${GiocatoriLista}" >
+				<td><a th:href="@{/giocatore/{playerId}(playerId=${giocatore.id})}"/><span th:text="${giocatore.nikname}"></span></a></td>
+				<td th:text="${giocatore.nome}"></td>
+				<td th:text="${giocatore.cognome}"></td>
+				<td th:text="${giocatore.getSquadra()!=null} ? ${giocatore.getSquadra().getNomeSquadra()}" : ""></td>
 			</tr>
 		</tbody>
 	</table>
@@ -37,7 +39,8 @@
 	<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
-	    <a class="navbar-brand" th:href="@{/}">Home</a>
+	    <a class="navbar-brand" th:href="@{/}">Home</a>	    
+	    <button type="button" class="btn btn-light"><a th:href="@{/inserimentoGiocatore}" method="get">Aggiungi giocatore</a>
 	  </div>
 	</nav>
 	</footer>
