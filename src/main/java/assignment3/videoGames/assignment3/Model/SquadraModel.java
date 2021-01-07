@@ -1,5 +1,6 @@
 package assignment3.videoGames.assignment3.Model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -22,6 +23,9 @@ public class SquadraModel {
 	@OneToMany
 	private List<GiocatoreModel> componenti;
 	
+	@ManyToMany
+	private List<PartitaModel> partiteSvolte;
+	
 	public SquadraModel() {
 		super();		
 	}
@@ -33,7 +37,7 @@ public class SquadraModel {
 		super();
 		this.nomeSquadra = nomeSquadra;
 		this.giocoSquadra = giocoSquadra;
-		this.componenti = componenti;		
+		this.componenti = componenti;			
 	}
 	public List<GiocatoreModel> getComponenti() {
 		return componenti;
@@ -68,6 +72,12 @@ public class SquadraModel {
 				return true;
 		}
 		return false;
+	}
+	public List<PartitaModel> getPartiteSvolte() {
+		return partiteSvolte;
+	}
+	public void setPartiteSvolte(List<PartitaModel> partiteSvolte) {
+		this.partiteSvolte = partiteSvolte;
 	}
 	
 }

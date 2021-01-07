@@ -83,18 +83,15 @@ public class Assignment3Application implements CommandLineRunner{
 		professionisti.add(g1);
 		professionisti.add(g2);
 		professionisti.add(g3);
+		/*Abbiamo una squadra Amatoriale e una professionista*/
+		SquadraModel mache = new SquadraProfessionistaModel( "Astralis", "CS:GO", professionisti, 2, 248447);		
+		SquadraModel prova = new SquadraAmatorialeModel("Gli Edd", "CS:GO", anchequi,"TAXI");
 		
-		SquadraModel mache = new SquadraProfessionistaModel( "Astralis", "CS:GO", professionisti, 2, 248447);	
-		
-		SquadraModel prova = new SquadraAmatorialeModel("Gli Edd", "CS:GO", anchequi,"TAXI");		
 		PartitaModel andata = new PartitaModel(mache,prova, 12, 16);
 		PartitaModel ritorno = new PartitaModel(prova,mache, 16, 10);
 		
-		PartitaModel andata2 = new PartitaModel(mache,prova, 13, 16);
-		PartitaModel ritorno2 = new PartitaModel(prova,mache, 11, 16);
 		
 		TorneoModel torneoSingolo = new TorneoModel("Bronze Cup 2014- Winter Edition", List.of(andata, ritorno));
-		TorneoModel torneoSingolo2 = new TorneoModel("Bronze Cup 2015- Winter Edition", List.of(andata2, ritorno2));
 		teamRepo.save(prova);
 		teamRepo.save(mache);	
 		
@@ -112,14 +109,14 @@ public class Assignment3Application implements CommandLineRunner{
 		playerRepo.save(g2);
 		playerRepo.save(g3);
 		
-		matchRepo.save(andata);		
+		matchRepo.save(andata);	
 		matchRepo.save(ritorno);
-		
-		matchRepo.save(andata2);		
-		matchRepo.save(ritorno2);
+		mache.setPartiteSvolte(List.of(andata,ritorno));
+		prova.setPartiteSvolte(List.of(andata,ritorno));
+		teamRepo.save(mache);
+		teamRepo.save(prova);
 		
 		cupRepo.save(torneoSingolo);	
-		cupRepo.save(torneoSingolo2);	
 		List <SquadraModel> prof = new LinkedList<SquadraModel>();
 		prof.add(prova);
 		MajorModel kato2014 = new MajorModel("Polonia", "Intel", 500000, prof);

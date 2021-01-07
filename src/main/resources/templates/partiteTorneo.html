@@ -23,13 +23,19 @@
 			<th scope="col">Home</th>			
 			<th scope="col">Visitors</th>
 			<th scope="col">Punteggio</th>
+			<th scope="col">Azione</th>
 		</thead>
 		<tbody>
 			<tr scope = "row" th:each="partita : ${partiteTorneo.getPartiteTorneo()}" >
 				<td > <a th:href="@{/squadra/{teamId}(teamId=${partita.home.id})}"/><span th:text="${partita.home.nomeSquadra}"></span></a></td>
 				<td > <a th:href="@{/squadra/{teamId}(teamId=${partita.against.id})}"/><span th:text="${partita.against.nomeSquadra}"></span></a></td>
-				<td th:text="${partita.homeRounds + '-' + partita.againstRounds}"></td>				
+				<td th:text="${partita.homeRounds + '-' + partita.againstRounds}"></td>
+				<td> 	
+					<a th:href="@{/eliminaPartita/{partitaId}/{torneoId}(partitaId=${partita.id},torneoId=${partiteTorneo.id})}" class="btn btn-primary">Elimina</a> 
+					<a th:href="@{/squadre}" class="btn btn-primary">Modifica</a> 
+				</td>		
 			</tr>
+			
 		</tbody>
 	</table>
 	<hr/>
@@ -37,9 +43,9 @@
 	<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
-	    <a class="navbar-brand" th:href="@{/}">Home</a>
-	  </div>
-	</nav>
+	    		<a class="navbar-brand" th:href="@{/}">Home</a>
+	  		</div>
+		</nav>
 	</footer>
 	<!-- Footer -->
 </body>

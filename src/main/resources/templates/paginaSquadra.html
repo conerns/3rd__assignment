@@ -6,43 +6,54 @@
 	<title>Squadre</title> 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-<body>
+<body>	
 	<nav class="navbar navbar-light bg-light">
-	  <div class="container-fluid">
-	    <span class="navbar-brand mb-0 h1">Profilo Squadra</span>
-	  </div>
-	</nav>
-	
+		<div class="container-fluid">
+	    	<span class="navbar-brand mb-0 h1">Profilo Squadra</span>
+	  	</div>
+	</nav>	
 	<div class="card text-center">
-	  <div class="card-header">	    
-	  </div>
-	  <div class="card-body">
-	    <h5 class="card-title" th:text="${singolaSquadra.nomeSquadra}"></h5>
-	    <hr>
-	    	<p class="card-text">Informazioni</p>
-	    <hr>
-		    Videogioco : <span th:text=${singolaSquadra.giocoSquadra}></span> <br>
-	    </br>	
-	    <hr>
-	    <p class="card-text">Componenti</p>
-    	<span th:each="componente, iterStat : ${singolaSquadra.componenti}">
-			<a th:href="@{/giocatore/{playerId}(playerId=${componente.id})}"/><span th:text="${componente.nikname}"></span></a>
+	  	<div class="card-header">	    
+	  	</div>
+	  	<div class="card-body">
+	    	<h3 class="card-title" th:text="${singolaSquadra.nomeSquadra}"></h3>	    
+		    <b>Videogioco</b> : <span th:text=${singolaSquadra.giocoSquadra}></span>
+	    	</br>	
+	    	<hr>
+	    	<h5><p class="card-text">Componenti</p></h5>
+    		<span th:each="componente, iterStat : ${singolaSquadra.componenti}">
+				<a th:href="@{/giocatore/{playerId}(playerId=${componente.id})}"/><span th:text="${componente.nikname}"></span></a>
 				<th:block th:if="${!iterStat.last}">,</th:block>
-		</span>
-	    <hr>   
-	  </div>
-	  <div class="card-footer text-muted">
-	      <a th:href="@{/squadre}" class="btn btn-primary">Torna alle squadre</a>	      
-	  </div>
+			</span>
+	    	<hr>   
+	  	</div>
+	  	<h4>Partite Squadra</h4>
+	  	<table  class="table table-striped table-bordered " style="text-align:center">
+			<thead>
+				<th scope="col">Home</th>			
+				<th scope="col">Visitors</th>
+				<th scope="col">Punteggio</th>
+			</thead>
+			<tbody>
+				<tr scope = "row" th:each="partita : ${singolaSquadra.getPartiteSvolte()}" >
+					<td > <a th:href="@{/squadra/{teamId}(teamId=${partita.home.id})}"/><span th:text="${partita.home.nomeSquadra}"></span></a></td>
+					<td > <a th:href="@{/squadra/{teamId}(teamId=${partita.against.id})}"/><span th:text="${partita.against.nomeSquadra}"></span></a></td>
+					<td th:text="${partita.homeRounds + '-' + partita.againstRounds}"></td>				
+				</tr>
+			</tbody>
+		</table>
+		
+	  	<div class="card-footer text-muted">
+	      	<a th:href="@{/squadre}" class="btn btn-primary">Torna alle squadre</a>	      
+	  	</div>
 	</div>
-	<
 	<!-- Footer -->
 	<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
 	    <a class="navbar-brand" th:href="@{/}">Home</a>
-	   <!-- <button type="button" class="btn btn-light"><a th:href="@{/eliminaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="get">Elimina giocatore</a>
-	    <button type="button" class="btn btn-light"><a th:href="@{/modificaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="post">Modifica profilo</a></button> -->
+	    <button type="button" class="btn btn-light"><a th:href="@{/eliminaSquadra/{squadraId}(squadraId=${singolaSquadra.id})}" method="get">Elimina squadra</a>
+	    <!-- <button type="button" class="btn btn-light"><a th:href="@{/modificaGiocatore/{playerId}(playerId=${singolaSquadra.id})}" method="post">Modifica squadra</a></button> -->
 	  </div>
 	</nav>
 	</footer>

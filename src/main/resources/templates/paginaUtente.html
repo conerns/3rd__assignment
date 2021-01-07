@@ -8,35 +8,58 @@
 </head>
 <body>
 	<nav class="navbar navbar-light bg-light">
-	  <div class="container-fluid">
-	    <span class="navbar-brand mb-0 h1">Profilo Utente</span>
-	  </div>
-	</nav>
-	
+		<div class="container-fluid">
+	    	<span class="navbar-brand mb-0 h1">Profilo Utente</span>
+		</div>
+	</nav>	
 	<div class="card text-center">
-	  <div class="card-header">	    
+		<div class="card-header">	    
+		</div>
+		<div class="card-body">
+	    	<h5 class="card-title" th:text="${singoloUtente.nikname}"></h5>
+    		<hr>
+	    		<p class="card-text">Anagrafica</p>
+	    	<hr>
+			    Nome : <span th:text=${singoloUtente.nome}></span> <br>
+			    Cognome : <span th:text=${singoloUtente.cognome}></span> 
+	    	</br>	
+	    	<hr>
+	    	<p class="card-text">Amici</p>
+		    <span th:each="amico, iterStat : ${singoloUtente.getAmici()}">
+				<a th:href="@{/giocatore/{playerId}(playerId=${amico.getId()})}"/><span th:text="${amico.getNikname()}"></span></a>
+				<th:block th:if="${!iterStat.last}">,</th:block>
+			</span>
+	    	<hr>   
+	    	<p class="card-text">Squadra</p>	    		
+	    		<div th:if="${singoloUtente.getSquadra()!=null}">
+				   <a th:href="@{/squadra/{teamId}(teamId=${singoloUtente.squadra.id})}"/><span th:text="${singoloUtente.squadra.nomeSquadra}"></span></a>
+				   <h3>Storico Partite del giocatore</h3>
+				  <table  class="table table-striped table-bordered " style="text-align:center">
+					<thead>
+						<th scope="col">Home</th>			
+						<th scope="col">Visitors</th>
+						<th scope="col">Punteggio</th>
+					</thead>
+					<tbody>
+						<tr scope = "row" th:each="partita : ${singoloUtente.squadra.getPartiteSvolte()}" >
+							<td > <a th:href="@{/squadra/{teamId}(teamId=${partita.home.id})}"/><span th:text="${partita.home.nomeSquadra}"></span></a></td>
+							<td > <a th:href="@{/squadra/{teamId}(teamId=${partita.against.id})}"/><span th:text="${partita.against.nomeSquadra}"></span></a></td>
+							<td th:text="${partita.homeRounds + '-' + partita.againstRounds}"></td>				
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<!-- ELSE -->
+				<div th:if="${singoloUtente.getSquadra()==null}">
+				   <span>Nessuna squadra</span>
+				</div>
+	    	<hr>	    	
 	  </div>
-	  <div class="card-body">
-	    <h5 class="card-title" th:text="${singoloUtente.nikname}"></h5>
-	    <hr>
-	    	<p class="card-text">Anagrafica</p>
-	    <hr>
-		    Nome : <span th:text=${singoloUtente.nome}></span> <br>
-		    Cognome : <span th:text=${singoloUtente.cognome}></span> 
-	    </br>	
-	    <hr>
-	    <p class="card-text">Amici</p>
-	    <span th:each="amico, iterStat : ${singoloUtente.getAmici()}">
-			<a th:href="@{/giocatore/{playerId}(playerId=${amico.getId()})}"/><span th:text="${amico.getNikname()}"></span></a>
-			<th:block th:if="${!iterStat.last}">,</th:block>
-		</span>
-	    <hr>   
-	  </div>
+	  
 	  <div class="card-footer text-muted">
 	      <a th:href="@{/squadre}" class="btn btn-primary">Torna alle squadre</a>	      
 	  </div>
 	</div>
-	<
 	<!-- Footer -->
 	<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
 		<nav class="navbar navbar-light bg-light">

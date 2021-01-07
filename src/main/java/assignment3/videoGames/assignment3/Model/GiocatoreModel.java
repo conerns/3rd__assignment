@@ -24,7 +24,8 @@ public class GiocatoreModel {
 	private SquadraModel squadra;
 	
 	@ManyToMany
-	private List<GiocatoreModel> amici;
+	private List<GiocatoreModel> amici;	
+	
 	
 	public GiocatoreModel() {
 		super();
