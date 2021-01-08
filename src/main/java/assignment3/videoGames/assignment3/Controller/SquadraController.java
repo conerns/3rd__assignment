@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import assignment3.videoGames.assignment3.Model.GiocatoreModel;
-import assignment3.videoGames.assignment3.Model.PartitaModel;
 import assignment3.videoGames.assignment3.Model.SquadraAmatorialeModel;
 import assignment3.videoGames.assignment3.Model.SquadraModel;
 import assignment3.videoGames.assignment3.Model.SquadraProfessionistaModel;
-import assignment3.videoGames.assignment3.Model.TorneoModel;
 import assignment3.videoGames.assignment3.Repository.GiocatoreRepository;
 import assignment3.videoGames.assignment3.Repository.MajorRespository;
 import assignment3.videoGames.assignment3.Repository.PartitaRepository;
@@ -33,13 +31,7 @@ public class SquadraController {
 	@Autowired
 	TorneiRepository cupRepo;
 	@Autowired
-	PartitaRepository gameRepo;
-	
-	/*@RequestMapping(value="/squadre",method=RequestMethod.GET)
-	public String teamRepository(Model model) {
-		model.addAttribute("squadre", teamRepo.findAll());
-		return "squadre";
-	}*/
+	PartitaRepository gameRepo;	
 	
 	@RequestMapping(value="/squadre",method=RequestMethod.GET)
 	public String profTeam(Model model) {
@@ -60,6 +52,24 @@ public class SquadraController {
 	public String playerProfile(@PathVariable Long teamId, Model model) {
 		model.addAttribute("singolaSquadra", teamRepo.findById(teamId).orElse(null));
 		return "paginaSquadra";
+	}
+	
+	@RequestMapping(value="/eliminaSquadra/{teamId}", method=RequestMethod.GET)
+	public String teamDelete(@PathVariable Long teamId) {
+		SquadraModel squadra = teamRepo.findById(teamId).orElse(null);
+		List<GiocatoreModel> componenti = squadra.getComponenti();
+		//le partite sono state giocate, non avrebbe senso che non siano presenti
+		//devono però sparire i collegamenti tra squadra e giocatori
+		if(componenti!=null) {
+			for(GiocatoreModel singolo: componenti) {
+				singolo.setSquadra(null);
+				playerRepo.save(singolo);
+			}
+		}
+		squadra.getComponenti().removeAll(componenti);
+		squadra.setNomeSquadra("Ex - " + squadra.getNomeSquadra());
+		teamRepo.save(squadra);		
+		return "redirect:/squadre";
 	}
 	
 	
