@@ -32,7 +32,7 @@
 				<td th:text="${partita.homeRounds + '-' + partita.againstRounds}"></td>
 				<td> 	
 					<a th:href="@{/eliminaPartita/{partitaId}/{torneoId}(partitaId=${partita.id},torneoId=${partiteTorneo.id})}" class="btn btn-primary">Elimina</a> 
-					<a th:href="@{/squadre}" class="btn btn-primary">Modifica</a> 
+					<a th:href="@{/modificaPartita/{torneoId}/{partitaId}(torneoId=${partiteTorneo.id},partitaId=${partita.id})}" class="btn btn-primary">Modifica</a> 
 				</td>		
 			</tr>
 			
