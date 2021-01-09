@@ -1,7 +1,5 @@
 package assignment3.videoGames.assignment3.Controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import assignment3.videoGames.assignment3.Model.GiocatoreModel;
 import assignment3.videoGames.assignment3.Model.PartitaModel;
 import assignment3.videoGames.assignment3.Model.SquadraModel;
 import assignment3.videoGames.assignment3.Model.TorneoModel;
@@ -47,10 +44,10 @@ public class PartitaController {
 	}
 	@RequestMapping(value="/inserimentoPartita/{torneoId}", method=RequestMethod.GET)
 	public String partiteTorneo(@PathVariable Long torneoId, Model model) {		
-		model.addAttribute("azioniTorneo", "creaPartita");
+		model.addAttribute("azioniPartita", "creaPartita");
 		model.addAttribute("torneoPartita", cupRepo.findById(torneoId).orElse(null));
 		model.addAttribute("squadreScelta", teamRepo.findAll());
-		return "azioniTorneo";
+		return "azioniPartita";
 	}	
 	@RequestMapping(value="/creaPartita/{torneoId}", method=RequestMethod.GET)
 	public String creaPartita(@PathVariable Long torneoId, 
@@ -73,5 +70,34 @@ public class PartitaController {
 		cupRepo.save(torneo);
 		return "redirect:/torneo/{torneoId}/partite";
 	}
-	
+	@RequestMapping(value="/modificaPartita/{torneoId}/{partitaId}", method=RequestMethod.GET)
+	public String modificaPartita(@PathVariable Long torneoId, @PathVariable Long partitaId, Model model) {		
+		model.addAttribute("azioniPartita", "modificaPartita");				
+		model.addAttribute("partitaDaModificare", matchRepo.findById(partitaId).orElse(null));
+		model.addAttribute("torneoPartita", cupRepo.findById(torneoId).orElse(null));
+		model.addAttribute("squadraScelta", teamRepo.findAll());
+		return "azioniPartita";
+	}	
+	//se possiamo modificare una partita, dobbiamo anche modificare la partita attuale nel torneo
+	@RequestMapping(value="/aggiornamentoPartita/{torneoId}/{partitaId}", method=RequestMethod.GET)
+	public String aggiornamentoPartita(@PathVariable Long torneoId, @PathVariable Long partitaId,
+			@RequestParam String squadraHome,
+			@RequestParam String squadraAgainst,
+			@RequestParam String turniHome,
+			@RequestParam String turniAgainst, Model model) {
+		TorneoModel torneoPartita = cupRepo.findById(torneoId).orElse(null);
+		PartitaModel daModificare = matchRepo.findById(partitaId).orElse(null);
+		torneoPartita.getPartiteTorneo().remove(daModificare);
+		cupRepo.save(torneoPartita);
+		daModificare.setAgainst(teamRepo.findById(Long.parseLong(squadraAgainst)).orElse(null));
+		daModificare.setHome(teamRepo.findById(Long.parseLong(squadraHome)).orElse(null));
+		daModificare.setHomeRounds(Integer.parseInt(turniHome));
+		daModificare.setAgainstRounds(Integer.parseInt(turniAgainst));
+		torneoPartita.getPartiteTorneo().add(daModificare);
+		matchRepo.save(daModificare);
+		teamRepo.save(daModificare.getAgainst());
+		teamRepo.save(daModificare.getHome());		
+		cupRepo.save(torneoPartita);
+		return "redirect:/torneo/{torneoId}/partite";
+	}
 }

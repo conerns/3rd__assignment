@@ -29,7 +29,6 @@ public class GiocatoreController {
 	@RequestMapping("/giocatore/{playerId}")
 	public String playerProfile(@PathVariable Long playerId, Model model) {
 		model.addAttribute("singoloUtente", playerRepo.findById(playerId).orElse(null));
-		// model.addAttribute("amiciUtente", playerRepo.findById(playerId).orElse(null).getAmici());
 		return "paginaUtente";
 	}
 	/**
