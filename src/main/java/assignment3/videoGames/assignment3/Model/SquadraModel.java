@@ -1,6 +1,5 @@
 package assignment3.videoGames.assignment3.Model;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,9 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
 public class SquadraModel {
@@ -20,7 +16,7 @@ public class SquadraModel {
 	private String nomeSquadra;
 	private String giocoSquadra;	 
 	
-	@OneToMany
+	@ManyToMany
 	private List<GiocatoreModel> componenti;
 	
 	@ManyToMany

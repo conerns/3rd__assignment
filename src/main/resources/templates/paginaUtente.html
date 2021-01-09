@@ -64,11 +64,11 @@
 	<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
-	    <a class="navbar-brand" th:href="@{/}">Home</a>
-	    <button type="button" class="btn btn-light"><a th:href="@{/eliminaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="get">Elimina giocatore</a>
-	    <button type="button" class="btn btn-light"><a th:href="@{/modificaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="post">Modifica profilo</a></button>
-	  </div>
-	</nav>
+			    <a class="navbar-brand" th:href="@{/}">Home</a>
+			    <button type="button" class="btn btn-light"><a th:href="@{/eliminaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="get">Elimina giocatore</a>
+			    <button type="button" class="btn btn-light"><a th:href="@{/modificaGiocatore/{playerId}(playerId=${singoloUtente.id})}" method="post">Modifica profilo</a></button>
+	  		</div>
+		</nav>
 	</footer>
 	<!-- Footer -->
 </body>

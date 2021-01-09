@@ -23,10 +23,11 @@ public class TorneoModel {
 	public TorneoModel() {
 		super();
 	}
-	public TorneoModel(String nomeTorneo, List<PartitaModel> partiteTorneo) {
+	public TorneoModel(String nomeTorneo, List<PartitaModel> partiteTorneo, SquadraModel squadraVincente) {
 		super();
 		this.nomeTorneo = nomeTorneo;
 		this.partiteTorneo = partiteTorneo;
+		this.vincitrice = squadraVincente;
 	}
 	public long getId() {
 		return id;
@@ -48,6 +49,9 @@ public class TorneoModel {
 	}
 	public SquadraModel getVincitrice() {
 		return vincitrice;
+	}
+	public void setVincitrice(SquadraModel vincitrice) {
+		this.vincitrice = vincitrice;
 	}
 	
 }

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Utente</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div th:if="${azioniTorneo == 'creaTorneo'}">
+		<nav class="navbar navbar-light bg-light">
+		  <div class="container-fluid">
+		    <span class="navbar-brand mb-0 h1">Nuovo Torneo</span>
+		  </div>
+		</nav>	
+	  	<form th:action="@{/creaTorneo}" method="post" enctype="multipart/form-data" >
+	  	<fieldset>
+			<div class="form-row">
+				<div class="form-group col-md-10 offset-md-1">
+					<label for="inputNome">Nome del Torneo</label>
+					<input type="text" class="form-control" placeholder="Inserire nome" name="nomeTorneo" id="inputNome"/>
+				</div>
+			</div>			
+		</fieldset>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Save changes</button>
+		</form>
+		<!-- Footer -->
+		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
+			<nav class="navbar navbar-light bg-light">
+				<div class="container-fluid">
+					<a class="navbar-brand" th:href="@{/}">Home</a>
+				</div>
+			</nav>
+		</footer>
+		<!-- Footer -->
+	</div>
+	<div th:if="${azioniTorneo == 'updateTorneo'}">
+		<nav class="navbar navbar-light bg-light">
+		  <div class="container-fluid">
+		    <span class="navbar-brand mb-0 h1">Nuovo Torneo</span>
+		  </div>
+		</nav>	
+	  	<form th:action="@{/aggiornaTorneo/{torneoId}(torneoId=${torneoAggiorna.id})}" method="get" enctype="multipart/form-data" >
+	  	<fieldset>
+			<div class="form-row">
+				<div class="form-group col-md-5 offset-md-1">
+					<label for="inputNome">Nome del Torneo</label>
+					<input type="text" class="form-control" th:value="${torneoAggiorna.nomeTorneo}" name="nomeTorneo" id="inputNome"/>
+				</div>
+				<div class="form-group col-md-5">
+					<label for="squadraHomeId">Scelta squadra Home</label>
+					<select class="form-control" name="vincitrice" id = "squadraHomeId">
+				    	<option th:each="squadra : ${squadreVincitrice}"
+				    			th:value="${squadra.id}"
+				    			th:name="${squadraId}"
+				    	 		th:text="${squadra.nomeSquadra}">
+				    	</option>
+				    </select>
+    			</div>
+			</div>			
+		</fieldset>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Save changes</button>
+		</form>
+		<!-- Footer -->
+		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
+			<nav class="navbar navbar-light bg-light">
+				<div class="container-fluid">
+					<a class="navbar-brand" th:href="@{/}">Home</a>
+				</div>
+			</nav>
+		</footer>
+		<!-- Footer -->
+	</div>
+	<!-- Area utilizzata per aggioranre le informazioni di un giocatore già
+	presente all'interno del database-->	
+	<div th:if="${azioniTorneo == 'creaPartita'}">
+		<nav class="navbar navbar-light bg-light">
+		  <div class="container-fluid">
+		    <span class="navbar-brand mb-0 h1">Aggiorna dati giocatore</span>
+		  </div>
+		</nav>	
+	  	<form th:action="@{/creaPartita/{torneoId}(torneoId=${torneoPartita.id})}" method="get" enctype="multipart/form-data" >
+	  	<fieldset>
+			<div class="form-row">
+				<div class="form-group col-md-5 offset-md-1">
+					<label for="squadraHomeId">Scelta squadra Home</label>
+					<select class="form-control" name="squadraHomeId" id = "squadraHomeId">
+				    	<option th:each="squadra : ${squadreScelta}"
+				    			th:value="${squadra.id}"
+				    			th:name="${squadraId}"
+				    	 		th:text="${squadra.nomeSquadra}">
+				    	</option>
+				    </select>
+    			</div>
+    			<div class="form-group col-md-5">
+					<label for="squadraAgainstId">Scelta squadra Against</label>
+					<select class="form-control" name="squadraAgainstId" id = "squadraAgainstId">
+				    	<option th:each="squadra : ${squadreScelta}"
+				    			th:value="${squadra.id}"
+				    			th:name="${squadraId}"
+				    	 		th:text="${squadra.nomeSquadra}">
+				    	</option>
+				    </select>
+    			</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-5 offset-md-1">
+					<label for="puntiHome">Round vinti Home</label>
+					<input type="number" min="0" max="16" class="form-control" placeholder="Inserire round vinti" name="puntiHome" id = "puntiHome">
+    			</div>
+    			<div class="form-group col-md-5">
+					<label for="squadra">Round vinti Against</label>
+					<input type="number" min="0" max="16" class="form-control" placeholder="Inserire round vinti" name="puntiAgainst" id = "puntiAgainst">
+    			</div>
+			</div>						
+		</fieldset>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Save changes</button>
+		</form>
+		<!-- Footer -->
+		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
+			<nav class="navbar navbar-light bg-light">
+				<div class="container-fluid">
+					<a class="navbar-brand" th:href="@{/}">Home</a>
+				</div>
+			</nav>
+		</footer>
+		<!-- Footer -->
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</html>

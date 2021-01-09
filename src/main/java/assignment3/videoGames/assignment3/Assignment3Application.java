@@ -91,7 +91,7 @@ public class Assignment3Application implements CommandLineRunner{
 		PartitaModel ritorno = new PartitaModel(prova,mache, 16, 10);
 		
 		
-		TorneoModel torneoSingolo = new TorneoModel("Bronze Cup 2014- Winter Edition", List.of(andata, ritorno));
+		TorneoModel torneoSingolo = new TorneoModel("Bronze Cup 2014- Winter Edition", List.of(andata, ritorno), prova);
 		teamRepo.save(prova);
 		teamRepo.save(mache);	
 		

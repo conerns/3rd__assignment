@@ -9,13 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import assignment3.videoGames.assignment3.Model.GiocatoreModel;
-import assignment3.videoGames.assignment3.Model.PartitaModel;
 import assignment3.videoGames.assignment3.Model.SquadraAmatorialeModel;
 import assignment3.videoGames.assignment3.Model.SquadraModel;
 import assignment3.videoGames.assignment3.Model.SquadraProfessionistaModel;
-import assignment3.videoGames.assignment3.Model.TorneoModel;
 import assignment3.videoGames.assignment3.Repository.GiocatoreRepository;
 import assignment3.videoGames.assignment3.Repository.MajorRespository;
 import assignment3.videoGames.assignment3.Repository.PartitaRepository;
@@ -33,13 +32,7 @@ public class SquadraController {
 	@Autowired
 	TorneiRepository cupRepo;
 	@Autowired
-	PartitaRepository gameRepo;
-	
-	/*@RequestMapping(value="/squadre",method=RequestMethod.GET)
-	public String teamRepository(Model model) {
-		model.addAttribute("squadre", teamRepo.findAll());
-		return "squadre";
-	}*/
+	PartitaRepository gameRepo;	
 	
 	@RequestMapping(value="/squadre",method=RequestMethod.GET)
 	public String profTeam(Model model) {
@@ -62,5 +55,49 @@ public class SquadraController {
 		return "paginaSquadra";
 	}
 	
+	@RequestMapping(value="/eliminaSquadra/{teamId}", method=RequestMethod.GET)
+	public String teamDelete(@PathVariable Long teamId) {
+		SquadraModel squadra = teamRepo.findById(teamId).orElse(null);
+		List<GiocatoreModel> componenti = squadra.getComponenti();
+		//le partite sono state giocate, non avrebbe senso che non siano presenti
+		//devono però sparire i collegamenti tra squadra e giocatori
+		if(componenti!=null) {
+			for(GiocatoreModel singolo: componenti) {
+				singolo.setSquadra(null);
+				playerRepo.save(singolo);
+			}
+		}
+		squadra.getComponenti().removeAll(componenti);
+		squadra.setNomeSquadra("Ex - " + squadra.getNomeSquadra());
+		teamRepo.save(squadra);		
+		return "redirect:/squadre";
+	}
 	
+	@RequestMapping(value="/inserimentoSquadraProf", method=RequestMethod.GET)
+	public String aggiuntaSquadraProf(Model model) {		
+		model.addAttribute("azioneSquadra", "inserimentoProf");
+		return "azioniSquadra";
+	}
+	@RequestMapping(value="/inserimentoSquadraAmm", method=RequestMethod.GET)
+	public String aggiuntaSquadraAmm(Model model) {		
+		model.addAttribute("azioneSquadra", "inserimentoAmm");
+		return "azioniSquadra";
+	}
+	@RequestMapping(value="/creaSquadraProfessionale", method=RequestMethod.POST)
+	public String profTeamAdd(@RequestParam String nomeSquadra, 
+			//@RequestParam String giocoSquadra, forse CSGO default
+			@RequestParam String major, @RequestParam String totalWin, Model model) {
+		SquadraModel prof = new SquadraProfessionistaModel(nomeSquadra,"CS:GO", null, 
+				Integer.parseInt(major),
+				Integer.parseInt(totalWin));
+        teamRepo.save(prof);    
+        return "redirect:/squadre";
+	}	
+	@RequestMapping(value="/creaSquadraAmatoriale", method=RequestMethod.POST)
+	public String ammTeamAdd(@RequestParam String nomeSquadra, 
+			@RequestParam String nameTag, Model model) {
+		SquadraModel prof = new SquadraAmatorialeModel(nomeSquadra,"CS:GO", null, nameTag);
+        teamRepo.save(prof);    
+        return "redirect:/squadre";
+	}
 }
