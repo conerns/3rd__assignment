@@ -3,7 +3,7 @@
 <head> 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	<title>Squadre</title> 
+	<title>Toreni</title> 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -27,7 +27,7 @@
 		<tbody>
 			<tr scope = "row" th:each="torneo : ${listaTornei}" >
 				<td th:text="${torneo.nomeTorneo}"></td>
-				<td>Decidere Come fare Vincitore</td>
+				<td th:text="${torneo.getVincitrice()!=null} ? ${torneo.vincitrice.nomeSquadra}" : "Ancora nessuna Vincitrice"></td>
 				<td>
 					<a th:href="@{/torneo/{torneoId}/partite(torneoId=${torneo.id})}"/><span>Storico Torneo</span></a>
 				</td>
@@ -40,7 +40,8 @@
 	<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
-	    <a class="navbar-brand" th:href="@{/}">Home</a>
+	    	<a class="navbar-brand" th:href="@{/}">Home</a>
+	    	<button type="button" class="btn btn-light"><a th:href="@{/inserimentoTorneo}" method="get">Crea Torneo</a>
 	  </div>
 	</nav>
 	</footer>

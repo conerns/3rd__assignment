@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import assignment3.videoGames.assignment3.Model.GiocatoreModel;
 import assignment3.videoGames.assignment3.Model.SquadraAmatorialeModel;
@@ -72,5 +73,31 @@ public class SquadraController {
 		return "redirect:/squadre";
 	}
 	
-	
+	@RequestMapping(value="/inserimentoSquadraProf", method=RequestMethod.GET)
+	public String aggiuntaSquadraProf(Model model) {		
+		model.addAttribute("azioneSquadra", "inserimentoProf");
+		return "azioniSquadra";
+	}
+	@RequestMapping(value="/inserimentoSquadraAmm", method=RequestMethod.GET)
+	public String aggiuntaSquadraAmm(Model model) {		
+		model.addAttribute("azioneSquadra", "inserimentoAmm");
+		return "azioniSquadra";
+	}
+	@RequestMapping(value="/creaSquadraProfessionale", method=RequestMethod.POST)
+	public String profTeamAdd(@RequestParam String nomeSquadra, 
+			//@RequestParam String giocoSquadra, forse CSGO default
+			@RequestParam String major, @RequestParam String totalWin, Model model) {
+		SquadraModel prof = new SquadraProfessionistaModel(nomeSquadra,"CS:GO", null, 
+				Integer.parseInt(major),
+				Integer.parseInt(totalWin));
+        teamRepo.save(prof);    
+        return "redirect:/squadre";
+	}	
+	@RequestMapping(value="/creaSquadraAmatoriale", method=RequestMethod.POST)
+	public String ammTeamAdd(@RequestParam String nomeSquadra, 
+			@RequestParam String nameTag, Model model) {
+		SquadraModel prof = new SquadraAmatorialeModel(nomeSquadra,"CS:GO", null, nameTag);
+        teamRepo.save(prof);    
+        return "redirect:/squadre";
+	}
 }
