@@ -6,7 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class GiocatoreModel {
@@ -16,8 +19,13 @@ public class GiocatoreModel {
 	private String nikname;
 	private String Nome;
 	private String Cognome;
+	
+	@ManyToOne
+	private SquadraModel squadra;
+	
 	@ManyToMany
-	private List<GiocatoreModel> amici;
+	private List<GiocatoreModel> amici;	
+	
 	
 	public GiocatoreModel() {
 		super();
@@ -26,7 +34,7 @@ public class GiocatoreModel {
 		super();
 		this.nikname = nikname;
 		this.Nome = nome;
-		this.Cognome = cognome;		
+		this.Cognome = cognome;	
 	}
 	public void setNikname(String nikname) {
 		this.nikname = nikname;
@@ -44,22 +52,24 @@ public class GiocatoreModel {
 		return Cognome;
 	}
 	public List<GiocatoreModel> getAmici() {
-		return amici;
+		return this.amici;
 	}
 	
-	public void setAmici(List<GiocatoreModel> amici) {
-		this.amici = amici;
+	public void setAmici(List<GiocatoreModel> listaamici) {
+		this.amici = listaamici;
 	}
 	
 	public String getNikname() {
 		return nikname;
 	}
+	public void setSquadra(SquadraModel squadra) {
+		this.squadra = squadra;
+	}
 	public String getNome() {
 		return Nome;
 	}
-	public boolean hasTeam(SquadraModel squadra) {
-		//if(squadra.getId() =  ) 
-		return true;
+	public SquadraModel getSquadra() {
+		return squadra;
 	}
 	public long getId() {
 		return id;

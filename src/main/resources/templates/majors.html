@@ -23,12 +23,14 @@
 			<th scope="col">Organizzatore evento</th>			
 			<th scope="col">Montepremi</th>
 			<th scope="col">Paese di svolgimento</th>	
+			<th scope="col">Data di svolgimento</th>
 		</thead>
 		<tbody>
 			<tr scope = "row" th:each="major : ${majors}" >
 				<td th:text="${major.organizzatore}" style="text-align:center"></td>			
 				<td th:text="${major.montepremi}"></td>				
-				<td th:text="${major.paeseSvolgimento}"</td>		
+				<td th:text="${major.paeseSvolgimento}"</td>	
+				<td th:text="${major.dataTorneo}"</td>			
 			</tr>
 		</tbody>
 	</table>

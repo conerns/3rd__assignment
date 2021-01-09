@@ -23,11 +23,10 @@
 			<th scope="col">Squadra</th>			
 			<th scope="col">Gioco</th>
 			<th scope="col">Componenti squadra</th>
-			<th scope="col">Tipologia</th>
 		</thead>
 		<tbody>
 			<tr scope = "row" th:each="squadra : ${squadre}" >
-				<td > <a th:href="@{/squadra/{teamId}(teamId=${squadra.id})}"/><span th:text="${squadra.nomeSquadra}"></span></a></td>
+				<td th:text="${squadra.nomeSquadra}"></td>
 				<td th:text="${squadra.giocoSquadra}"></td>
 				<td >
 					<span th:each="componente, iterStat : ${squadra.componenti}">
@@ -35,18 +34,6 @@
 						<th:block th:if="${!iterStat.last}">,</th:block>
 					</span>
 				</td>
-				<td>Professionisti</td>
-			</tr>
-			<tr scope = "row" th:each="squadra : ${squadreAmm}" >
-				<td > <a th:href="@{/squadra/{teamId}(teamId=${squadra.id})}"/><span th:text="'[' + ${squadra.nameTag} + ']' + ${squadra.nomeSquadra}"></span></a></td>
-				<td th:text="${squadra.giocoSquadra}"></td>
-				<td >
-					<span th:each="componente, iterStat : ${squadra.componenti}">
-						<a th:href="@{/giocatore/{playerId}(playerId=${componente.id})}"/><span th:text="${componente.nikname}"></span></a>
-						<th:block th:if="${!iterStat.last}">,</th:block>
-					</span>
-				</td>
-				<td>Amatoriali</td>
 			</tr>
 		</tbody>
 	</table>
@@ -55,9 +42,7 @@
 	<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
-	    	<a class="navbar-brand" th:href="@{/}">Home</a>
-	    	<button type="button" class="btn btn-light"><a th:href="@{/inserimentoSquadraProf}" method="get">Crea Squadra Professionista</a>
-	    	<button type="button" class="btn btn-light"><a th:href="@{/inserimentoSquadraAmm}" method="get">Crea Squadra Amatoriale</a>
+	    <a class="navbar-brand" th:href="@{/}">Home</a>
 	  </div>
 	</nav>
 	</footer>

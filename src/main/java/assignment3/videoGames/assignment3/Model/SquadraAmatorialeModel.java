@@ -1,5 +1,7 @@
 package assignment3.videoGames.assignment3.Model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 
 /**
@@ -17,10 +19,12 @@ public class SquadraAmatorialeModel extends SquadraModel{
 	public SquadraAmatorialeModel() {
 		super();
 	}
-	public SquadraAmatorialeModel(long id, String nameTag) {
-		super(id);
+	
+	public SquadraAmatorialeModel(String nomeSquadra, String giocoSquadra, List<GiocatoreModel> componenti,String nameTag) {		
+		super(nomeSquadra, giocoSquadra, componenti);
 		this.nameTag = nameTag;
 	}
+	
 	public String getNameTag() {
 		return nameTag;
 	}

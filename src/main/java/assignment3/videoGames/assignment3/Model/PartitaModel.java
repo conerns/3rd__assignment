@@ -13,14 +13,13 @@ public class PartitaModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private int homeRounds;
-	private int againstRounds;	
+	private int againstRounds;		
 	@OneToOne
-	SquadraModel home; 
-	@OneToOne
+	SquadraModel home; 	
+	@OneToOne	
 	SquadraModel against; 	
-	@ManyToOne
-	GiocatoreModel partitaSingola;
 	
+		
 	public PartitaModel() {
 		super();
 	}
@@ -64,12 +63,6 @@ public class PartitaModel {
 	}
 	public void setAgainst(SquadraModel against) {
 		this.against = against;
-	}
-	public GiocatoreModel getPartitaSingola() {
-		return partitaSingola;
-	}
-	public void setPartitaSingola(GiocatoreModel partitaSingola) {
-		this.partitaSingola = partitaSingola;
 	}
 	public long getId() {
 		return id;

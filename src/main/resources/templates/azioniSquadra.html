@@ -6,28 +6,28 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div th:if="${azionegiocatore == 'inserimento'}">
+	<div th:if="${azioneSquadra == 'inserimentoProf'}">
 		<nav class="navbar navbar-light bg-light">
 		  <div class="container-fluid">
-		    <span class="navbar-brand mb-0 h1">Nuovo giocatore</span>
+		    <span class="navbar-brand mb-0 h1">Nuova squadra</span>
 		  </div>
 		</nav>	
-	  	<form th:action="@{/creaGiocatore}" method="post" enctype="multipart/form-data" >
+	  	<form th:action="@{/creaSquadraProfessionale}" method="post" enctype="multipart/form-data" >
 	  	<fieldset>
 			<div class="form-row">
 				<div class="form-group col-md-10 offset-md-1">
-					<label for="inputNickname">Nickname</label>
-					<input type="text" class="form-control" placeholder="Inserire Nickname" name="nikname" id="inputNickname"/>
+					<label for="inputTeamName">Nome della Squadra</label>
+					<input type="text" class="form-control" placeholder="Inserire nome" name="nomeSquadra" id="inputTeamName"/>
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-5 offset-md-1">
-		    		<label for="inputNome">Nome giocatore</label>
-	        		<input type="text" class="form-control" placeholder="Inserire nome" name="nome" id="inputNome"/>
+		    		<label for="inputNome">Numero di Major vinte</label>
+	        		<input type="number" min="0" class="form-control" placeholder="Inserire numero" name="major" id="inputNome"/>
 		    	</div>
 				<div class="form-group col-md-5">
 		    		<label for="inputCognome">Cognome giocatore</label>
-	        		<input type="text" class="form-control" placeholder="Inserire cognome" name="cognome" id="inputCognome"/>
+	        		<input type="number" min="0" class="form-control" placeholder="Inserire vincita" name="totalWin" id="inputCognome"/>
 		    	</div>
 			</div>
 		</fieldset>
@@ -43,40 +43,24 @@
 		</footer>
 		<!-- Footer -->
 	</div>	
-	<!-- Area utilizzata per aggioranre le informazioni di un giocatore già	presente all'interno del database-->	
-	<div th:if="${azionegiocatore == 'aggiornamento'}">
+	<div th:if="${azioneSquadra == 'inserimentoAmm'}">
 		<nav class="navbar navbar-light bg-light">
 		  <div class="container-fluid">
-		    <span class="navbar-brand mb-0 h1">Aggiorna dati giocatore</span>
+		    <span class="navbar-brand mb-0 h1">Nuova squadra</span>
 		  </div>
 		</nav>	
-	  	<form th:action="@{/aggiornaGiocatore/{playerId}(playerId=${giocatore.id})}" method="get" enctype="multipart/form-data" >
+	  	<form th:action="@{/creaSquadraAmatoriale}" method="post" enctype="multipart/form-data" >
 	  	<fieldset>
 			<div class="form-row">
-				<div class="form-group col-md-5 offset-md-1">
-					<label for="inputNickname">Nickname</label>
-					<input type="text" class="form-control" th:value="${giocatore.nikname}" name="nickname" id="inputNickname"/>
+				<div class="form-group col-md-10 offset-md-1">
+					<label for="inputTeamName">Nome della Squadra</label>
+					<input type="text" class="form-control" placeholder="Inserire nome" name="nomeSquadra" id="inputTeamName"/>
 				</div>
-				<div class="form-group col-md-5">
-					<label for="squadra">Squadra</label>
-					<select class="form-control" name="squadraId" id = "squadraId">
-				    	<option value="null">Nessuna squadra</option>
-				    	<option th:each="squadra : ${squadreAggiornamento}"
-				    			th:value="${squadra.id}"
-				    			th:name="${squadraId}"
-				    	 		th:text="${squadra.nomeSquadra}">
-				    	</option>
-				    </select>
-    			</div>
 			</div>
 			<div class="form-row">
-				<div class="form-group col-md-5 offset-md-1">
-		    		<label for="inputNome">Nome giocatore</label>
-	        		<input type="text" class="form-control" th:value="${giocatore.nome}" name="nome" id="inputNome"/>
-		    	</div>
-				<div class="form-group col-md-5">
-		    		<label for="inputCognome">Cognome giocatore</label>
-	        		<input type="text" class="form-control" th:value="${giocatore.cognome}" name="cognome" id="inputCognome"/>
+				<div class="form-group col-md-10 offset-md-1">
+		    		<label for="inputNameTag">Tag della squadra</label>
+	        		<input type="text" class="form-control" placeholder="Inserire vincita" name="nameTag" id="inputNameTag"/>
 		    	</div>
 			</div>
 		</fieldset>
