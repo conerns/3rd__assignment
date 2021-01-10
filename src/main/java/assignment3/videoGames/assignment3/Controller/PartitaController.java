@@ -1,5 +1,8 @@
 package assignment3.videoGames.assignment3.Controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import assignment3.videoGames.assignment3.Model.MajorModel;
 import assignment3.videoGames.assignment3.Model.PartitaModel;
 import assignment3.videoGames.assignment3.Model.SquadraModel;
+import assignment3.videoGames.assignment3.Model.SquadraProfessionistaModel;
 import assignment3.videoGames.assignment3.Model.TorneoModel;
 import assignment3.videoGames.assignment3.Repository.GiocatoreRepository;
 import assignment3.videoGames.assignment3.Repository.MajorRespository;
@@ -52,6 +57,57 @@ public class PartitaController {
 		model.addAttribute("squadreScelta", teamRepo.findAll());
 		return "azioniPartita";
 	}	
+	@RequestMapping(value="/inserimentoPartitaMajor/{torneoId}", method=RequestMethod.GET)
+	public String partiteTorneoMajor(@PathVariable Long torneoId, Model model) {		
+		model.addAttribute("azioniPartita", "creaPartitaMajor");
+		model.addAttribute("torneoPartita", cupRepo.findById(torneoId).orElse(null));
+		List<SquadraModel> squadreProf = new ArrayList<>();
+		for(SquadraModel squadra : teamRepo.findAll()) {
+			if(!squadreProf.contains(squadra)) {
+				if(squadra instanceof SquadraProfessionistaModel)
+					squadreProf.add(squadra);
+			}
+		}				
+		model.addAttribute("squadreScelta",  squadreProf);
+		model.addAttribute("abbastanza", (squadreProf.size()>1));
+		return "azioniPartita";
+	}	
+	@RequestMapping(value="/creaPartitaMajor/{torneoId}", method=RequestMethod.GET)
+	public String creaPartitaMajor(@PathVariable Long torneoId, @RequestParam String squadraHomeId,
+			@RequestParam String squadraAgainstId,
+			@RequestParam String puntiHome,
+			@RequestParam String puntiAgainst,
+			Model model) {
+		if(squadraHomeId.equals(squadraAgainstId)) {
+			model.addAttribute("erroreGenerato", "Non si può scegliere la stessa squadra");
+			return "/error";
+		}
+		PartitaModel nuova = new PartitaModel(teamRepo.findById(Long.parseLong(squadraHomeId)).orElse(null), 
+				teamRepo.findById(Long.parseLong(squadraAgainstId)).orElse(null), 
+				Integer.parseInt(puntiHome), 
+				Integer.parseInt(puntiAgainst));
+		TorneoModel torneo = cupRepo.findById(torneoId).orElse(null);
+		MajorModel majorTorneo = torneo.getMajorAppartenenza();
+		torneo.getPartiteTorneo().add(nuova);
+		nuova.getAgainst().getPartiteSvolte().add(nuova);
+		nuova.getHome().getPartiteSvolte().add(nuova);		
+		matchRepo.save(nuova);
+		teamRepo.save(nuova.getAgainst());
+		teamRepo.save(nuova.getHome());
+		if(!majorTorneo.getSquadrePartecipanti().contains(nuova.getAgainst())){
+			SquadraProfessionistaModel temp = (SquadraProfessionistaModel) nuova.getAgainst();
+			majorTorneo.getSquadrePartecipanti().add(temp);
+		}
+		else if(!majorTorneo.getSquadrePartecipanti().contains(nuova.getHome())) {
+			SquadraProfessionistaModel temp = (SquadraProfessionistaModel) nuova.getHome();
+			majorTorneo.getSquadrePartecipanti().add(temp);
+		}
+		majorRepo.save(majorTorneo);
+		torneo.setMajorAppartenenza(majorTorneo);
+		cupRepo.save(torneo);
+		majorRepo.save(majorTorneo);
+		return "redirect:/torneo/{torneoId}/partite";
+	}
 	@RequestMapping(value="/creaPartita/{torneoId}", method=RequestMethod.GET)
 	public String creaPartita(@PathVariable Long torneoId, 
 			@RequestParam String squadraHomeId,

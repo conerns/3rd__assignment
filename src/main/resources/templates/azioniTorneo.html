@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Utente</title>
+	<title>Azioni Torneo</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
@@ -21,7 +21,7 @@
 				</div>
 			</div>			
 		</fieldset>
-		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Save changes</button>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
 		</form>
 		<!-- Footer -->
 		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
@@ -36,7 +36,7 @@
 	<div th:if="${azioniTorneo == 'updateTorneo'}">
 		<nav class="navbar navbar-light bg-light">
 		  <div class="container-fluid">
-		    <span class="navbar-brand mb-0 h1">Nuovo Torneo</span>
+		    <span class="navbar-brand mb-0 h1">Modifica Torneo</span>
 		  </div>
 		</nav>	
 	  	<form th:action="@{/aggiornaTorneo/{torneoId}(torneoId=${torneoAggiorna.id})}" method="get" enctype="multipart/form-data" >
@@ -47,7 +47,7 @@
 					<input type="text" class="form-control" th:value="${torneoAggiorna.nomeTorneo}" name="nomeTorneo" id="inputNome"/>
 				</div>
 				<div class="form-group col-md-5">
-					<label for="squadraHomeId">Scelta squadra Home</label>
+					<label for="squadraHomeId">Scelta squadra vincitrice</label>
 					<select class="form-control" name="vincitrice" id = "squadraHomeId">
 				    	<option th:each="squadra : ${squadreVincitrice}"
 				    			th:value="${squadra.id}"
@@ -58,7 +58,45 @@
     			</div>
 			</div>			
 		</fieldset>
-		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Save changes</button>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
+		</form>
+		<!-- Footer -->
+		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
+			<nav class="navbar navbar-light bg-light">
+				<div class="container-fluid">
+					<a class="navbar-brand" th:href="@{/}">Home</a>
+				</div>
+			</nav>
+		</footer>
+		<!-- Footer -->
+	</div>
+	<!-- una update differente dato che appartiene alla Major-->
+	<div th:if="${azioniTorneo == 'updateTorneoMajor'}">
+		<nav class="navbar navbar-light bg-light">
+		  <div class="container-fluid">
+		    <span class="navbar-brand mb-0 h1">Modifica Torneo</span>
+		  </div>
+		</nav>	
+	  	<form th:action="@{/aggiornaTorneoMajor/{torneoId}(torneoId=${daAggiornare.id})}" method="get" enctype="multipart/form-data" >
+	  	<fieldset>
+			<div class="form-row">
+				<div class="form-group col-md-5 offset-md-1">
+					<label for="inputNome">Nome del Torneo</label>
+					<input type="text" class="form-control" th:value="${daAggiornare.nomeTorneo}" name="nomeTorneo" id="inputNome"/>
+				</div>
+				<div th:if="${vinceSe}"class="form-group col-md-5">
+					<label for="squadraHomeId">Scelta squadra vincitrice</label>
+					<select class="form-control" name="vincitrice" id = "squadraHomeId">
+				    	<option th:each="squadra : ${daAggiornare.majorAppartenenza.squadrePartecipanti}"
+				    			th:value="${squadra.id}"
+				    			th:name="${squadraId}"
+				    	 		th:text="${squadra.nomeSquadra}">
+				    	</option>
+				    </select>
+    			</div>
+			</div>			
+		</fieldset>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
 		</form>
 		<!-- Footer -->
 		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">

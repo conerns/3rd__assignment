@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Utente</title>
+	<title>Azioni Squadra</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
@@ -31,7 +31,7 @@
 		    	</div>
 			</div>
 		</fieldset>
-		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Save changes</button>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
 		</form>
 		<!-- Footer -->
 		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
@@ -60,11 +60,81 @@
 			<div class="form-row">
 				<div class="form-group col-md-10 offset-md-1">
 		    		<label for="inputNameTag">Tag della squadra</label>
-	        		<input type="text" class="form-control" placeholder="Inserire vincita" name="nameTag" id="inputNameTag"/>
+	        		<input type="text" class="form-control" placeholder="Inserire tag" name="nameTag" id="inputNameTag"/>
 		    	</div>
 			</div>
 		</fieldset>
-		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Save changes</button>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
+		</form>
+		<!-- Footer -->
+		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
+			<nav class="navbar navbar-light bg-light">
+				<div class="container-fluid">
+					<a class="navbar-brand" th:href="@{/}">Home</a>
+				</div>
+			</nav>
+		</footer>
+		<!-- Footer -->
+	</div>
+	<div th:if="${azioneSquadra == 'modificaAm'}">
+		<nav class="navbar navbar-light bg-light">
+		  <div class="container-fluid">
+		    <span class="navbar-brand mb-0 h1">Modifica squadra</span>
+		  </div>
+		</nav>	
+	  	<form th:action="@{/aggiornamentoSquadraAmm/{squadraId}(squadraId=${squadra.id})}" method="get" enctype="multipart/form-data" >
+	  	<fieldset>
+			<div class="form-row">
+				<div class="form-group col-md-10 offset-md-1">
+					<label for="inputTeamName">Nome della Squadra</label>
+					<input type="text" class="form-control"  th:value="${squadra.nomeSquadra}" name="nomeSquadra" id="inputTeamName"/>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-10 offset-md-1">
+		    		<label for="inputNameTag">Tag della squadra</label>
+	        		<input type="text" class="form-control" th:value="${squadra.nameTag}" name="nameTag" id="inputNameTag"/>
+		    	</div>
+			</div>
+		</fieldset>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
+		</form>
+		<!-- Footer -->
+		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">
+			<nav class="navbar navbar-light bg-light">
+				<div class="container-fluid">
+					<a class="navbar-brand" th:href="@{/}">Home</a>
+				</div>
+			</nav>
+		</footer>
+		<!-- Footer -->
+	</div>
+	<div th:if="${azioneSquadra == 'modificaProf'}">
+		<nav class="navbar navbar-light bg-light">
+		  <div class="container-fluid">
+		    <span class="navbar-brand mb-0 h1">Modifica squadra</span>
+		  </div>
+		</nav>	
+	  	<form th:action="@{/aggiornamentoSquadraProf/{squadraId}(squadraId=${squadra.id})}" method="get" enctype="multipart/form-data" >
+	  	<fieldset>
+			<div class="form-row">
+				<div class="form-group col-md-10 offset-md-1">
+					<label for="inputTeamName">Nome della Squadra</label>
+					<input type="text" class="form-control" th:value="${squadra.nomeSquadra}" name="nomeSquadra" id="inputTeamName"/>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-5 offset-md-1">
+		    		<label for="inputMajor">Major vinte</label>
+	        		<input type="text" class="form-control" th:value="${squadra.numeroMajorVinte}" name="numeroMajorVinte" id="inputMajor"/>
+		    	</div>
+		    	<div class="form-group col-md-5">
+		    		<label for="inputVittorie">Totale vincite</label>
+	        		<input type="text" class="form-control"th:value="${squadra.totalWinning}" name="totalWinning" id="inputVittorie"/>
+		    	</div>
+			</div>
+		</fieldset>
+		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
 		</form>
 		<!-- Footer -->
 		<footer class="page-footer font-small blue" style="position:fixed; bottom:0; width:100%; text-align:center">

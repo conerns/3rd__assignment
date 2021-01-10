@@ -3,7 +3,7 @@
 <head> 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	<title>Squadre</title> 
+	<title>Torneo</title> 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -12,16 +12,12 @@
 	    <span class="navbar-brand mb-0 h1">Storico partite <b th:text = "${partiteTorneo.nomeTorneo}"></b></span>
 	  </div>
 	  <form class="container-fluid">
-	    <div class="input-group">
-	      <span class="input-group-text" id="basic-addon1">@</span>
-	      <input type="text" class="form-control" placeholder="Cerca Torneo" aria-label="Username" aria-describedby="basic-addon1">
-	    </div>
  	 </form>
 	</nav>
 	<table  class="table table-striped table-bordered " style="text-align:center">
 		<thead>
-			<th scope="col">Home</th>			
-			<th scope="col">Visitors</th>
+			<th scope="col">Casa</th>			
+			<th scope="col">Trasferta</th>
 			<th scope="col">Punteggio</th>
 			<th scope="col">Azione</th>
 		</thead>
@@ -44,8 +40,18 @@
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
 	    		<a class="navbar-brand" th:href="@{/}">Home</a>
-	    		<button th:if="${partiteTorneo.getMajorAppartenenza()==null}" type="button" class="btn btn-light"><a th:href="@{/modificaTorneo/{torneoId}(torneoId=${partiteTorneo.id})}" method="get">Modifica Torneo</a>
-	    		<button th:if="${partiteTorneo.getMajorAppartenenza()==null}" type="button" class="btn btn-light"><a th:href="@{/inserimentoPartita/{torneoId}(torneoId=${partiteTorneo.id})}" method="get">Crea partita Torneo</a>	    		
+	    		<button th:if="${partiteTorneo.getMajorAppartenenza()==null}" type="button" class="btn btn-light">
+	    			<a th:href="@{/modificaTorneo/{torneoId}(torneoId=${partiteTorneo.id})}" method="get">Modifica Torneo</a>
+	    		</button>
+    			<button th:if="${partiteTorneo.getMajorAppartenenza()==null}" type="button" class="btn btn-light">
+    				<a th:href="@{/inserimentoPartita/{torneoId}(torneoId=${partiteTorneo.id})}" method="get">Crea partita Torneo</a>	
+	    		</button>
+	    		<button th:if="${partiteTorneo.getMajorAppartenenza()!=null}" type="button" class="btn btn-light">
+	    			<a th:href="@{/modificaTorneoMajor/{torneoId}(torneoId=${partiteTorneo.id})}" method="get">Modifica Torneo</a>
+	    		</button>
+	    		<button th:if="${partiteTorneo.getMajorAppartenenza()!=null}" type="button" class="btn btn-light">
+	    			<a th:href="@{/inserimentoPartitaMajor/{torneoId}(torneoId=${partiteTorneo.id})}" method="get">Crea partita Torneo</a>	    
+	    		</button>		
 	  		</div>
 		</nav>
 	</footer>

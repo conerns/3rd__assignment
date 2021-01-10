@@ -60,6 +60,7 @@ public class MajorController {
 		MajorModel daEliminare = majorRepo.findById(majorId).orElse(null);		
 		TorneoModel torneoMajor = daEliminare.getTorneoMajor();
 		List <PartitaModel> partiteTorneoMajor = torneoMajor.getPartiteTorneo();
+		daEliminare.setTorneoMajor(null);
 		SquadraModel storicoPartite;
 		if(partiteTorneoMajor!=null) {
 			for(PartitaModel partita : partiteTorneoMajor) {
@@ -69,14 +70,13 @@ public class MajorController {
 				storicoPartite = partita.getHome();
 				storicoPartite.getPartiteSvolte().remove(partita);
 				teamRepo.save(storicoPartite);
-				torneoMajor.getPartiteTorneo().remove(partita);
-				cupRepo.save(torneoMajor);
-			}			
+			}	
+			torneoMajor.getPartiteTorneo().removeAll(partiteTorneoMajor);
+			cupRepo.save(torneoMajor);
 		}
 		torneoMajor.setMajorAppartenenza(null);
-		cupRepo.save(torneoMajor);
 		majorRepo.delete(daEliminare);
-		cupRepo.delete(torneoMajor); //se elimino la major, il torneo assocciato smette di esistere
+		cupRepo.delete(torneoMajor); //se elimino la major, il torneo associato smette di esistere
 		return "redirect:/majors";
 	}
 	

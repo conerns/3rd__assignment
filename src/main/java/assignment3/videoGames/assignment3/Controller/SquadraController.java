@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import assignment3.videoGames.assignment3.Model.GiocatoreModel;
+import assignment3.videoGames.assignment3.Model.PartitaModel;
 import assignment3.videoGames.assignment3.Model.SquadraAmatorialeModel;
 import assignment3.videoGames.assignment3.Model.SquadraModel;
 import assignment3.videoGames.assignment3.Model.SquadraProfessionistaModel;
+import assignment3.videoGames.assignment3.Model.TorneoModel;
 import assignment3.videoGames.assignment3.Repository.GiocatoreRepository;
 import assignment3.videoGames.assignment3.Repository.MajorRespository;
 import assignment3.videoGames.assignment3.Repository.PartitaRepository;
@@ -34,7 +36,7 @@ public class SquadraController {
 	@Autowired
 	PartitaRepository gameRepo;	
 	
-	@RequestMapping(value="/squadre",method=RequestMethod.GET)
+	@RequestMapping(value="/squadre")
 	public String profTeam(Model model) {
 		List<SquadraModel> soloProf = new ArrayList<SquadraModel>();
 		List<SquadraModel> soloAmm = new ArrayList<SquadraModel>();
@@ -83,14 +85,14 @@ public class SquadraController {
 	public String aggiuntaSquadraAmm(Model model) {		
 		model.addAttribute("azioneSquadra", "inserimentoAmm");
 		return "azioniSquadra";
-	}
+	}	
 	@RequestMapping(value="/creaSquadraProfessionale", method=RequestMethod.POST)
 	public String profTeamAdd(@RequestParam String nomeSquadra, 
 			//@RequestParam String giocoSquadra, forse CSGO default
 			@RequestParam String major, @RequestParam String totalWin, Model model) {
 		SquadraModel prof = new SquadraProfessionistaModel(nomeSquadra,"CS:GO", null, 
 				Integer.parseInt(major),
-				Integer.parseInt(totalWin));
+				Integer.parseInt(totalWin));		
         teamRepo.save(prof);    
         return "redirect:/squadre";
 	}	
@@ -100,5 +102,40 @@ public class SquadraController {
 		SquadraModel prof = new SquadraAmatorialeModel(nomeSquadra,"CS:GO", null, nameTag);
         teamRepo.save(prof);    
         return "redirect:/squadre";
+	}
+	
+	@RequestMapping(value="/modificaSquadraProf/{squadraId}", method=RequestMethod.GET)
+	public String modificaSquadraProf(@PathVariable Long squadraId, Model model) {		
+		model.addAttribute("azioneSquadra", "modificaProf");
+		model.addAttribute("squadra", teamRepo.findById(squadraId).orElse(null));
+		return "azioniSquadra";
+	}
+	@RequestMapping(value="/modificaSquadraAm/{squadraId}", method=RequestMethod.GET)
+	public String modificaSquadraAmm(@PathVariable Long squadraId, Model model) {		
+		model.addAttribute("azioneSquadra", "modificaAm");
+		model.addAttribute("squadra", teamRepo.findById(squadraId).orElse(null));
+		return "azioniSquadra";
+	}
+	@RequestMapping(value="/aggiornamentoSquadraProf/{squadraId}", method=RequestMethod.GET)
+	public String aggiornamentoSquadraProf(@PathVariable Long squadraId,
+			@RequestParam String nomeSquadra,
+			@RequestParam String numeroMajorVinte,
+			@RequestParam String totalWinning, Model model) {
+		SquadraProfessionistaModel attuale = (SquadraProfessionistaModel) teamRepo.findById(squadraId).orElse(null);
+		attuale.setNomeSquadra(nomeSquadra);
+		attuale.setNumeroMajorVinte(Integer.parseInt(numeroMajorVinte));
+		attuale.setTotalWinning(Integer.parseInt(totalWinning));
+		teamRepo.save(attuale);
+		return "redirect:/squadra/{squadraId}";
+	}
+	@RequestMapping(value="/aggiornamentoSquadraAmm/{squadraId}", method=RequestMethod.GET)
+	public String aggiornamentoSquadraAmm(@PathVariable Long squadraId,
+			@RequestParam String nomeSquadra,
+			@RequestParam String nameTag, Model model) {
+		SquadraAmatorialeModel attuale = (SquadraAmatorialeModel) teamRepo.findById(squadraId).orElse(null);
+		attuale.setNomeSquadra(nomeSquadra);
+		attuale.setNameTag(nameTag);
+		teamRepo.save(attuale);
+		return "redirect:/squadra/{squadraId}";
 	}
 }

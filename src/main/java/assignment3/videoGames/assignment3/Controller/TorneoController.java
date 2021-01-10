@@ -85,6 +85,29 @@ public class TorneoController {
 		return "redirect:/tornei";
 	}
 	
+	@RequestMapping(value="/modificaTorneoMajor/{torneoId}", method=RequestMethod.GET)
+	public String modificaTorneoMajor(@PathVariable Long torneoId, Model model) {
+		TorneoModel aggiorna = cupRepo.findById(torneoId).orElse(null);
+		model.addAttribute("azioniTorneo", "updateTorneoMajor");
+		model.addAttribute("daAggiornare", aggiorna);
+		model.addAttribute("vinceSe", (aggiorna.getMajorAppartenenza().getSquadrePartecipanti().size()>1));
+		return "azioniTorneo";
+	}
+	
+	
+	@RequestMapping(value="/aggiornaTorneoMajor/{torneoId}", method=RequestMethod.GET)
+	public String aggiornaTorneoMajor(@PathVariable Long torneoId,
+			@RequestParam String nomeTorneo,
+			@RequestParam(value = "vincitrice", required = false) String vincitrice,
+			Model model) {
+		TorneoModel aggiorna = cupRepo.findById(torneoId).orElse(null);
+		aggiorna.setNomeTorneo(nomeTorneo);
+		if(vincitrice!=null)
+			aggiorna.setVincitrice(teamRepo.findById(Long.parseLong(vincitrice)).orElse(null));
+		cupRepo.save(aggiorna);
+		return "redirect:/tornei";
+	}
+	
 	@RequestMapping(value="/eliminaTorneo/{torneoId}", method=RequestMethod.GET)
 	public String eliminaTorneo(@PathVariable Long torneoId, Model model) {
 		TorneoModel aggiorna = cupRepo.findById(torneoId).orElse(null);
@@ -109,26 +132,7 @@ public class TorneoController {
 		cupRepo.delete(aggiorna);
 		return "redirect:/tornei";
 	}
-	/**
-	 * TorneoModel torneoPartita = cupRepo.findById(torneoId).orElse(null);
-		PartitaModel partita = matchRepo.findById(partitaId).orElse(null);	
-		torneoPartita.getPartiteTorneo().remove(partita);		
-		SquadraModel andata = partita.getAgainst();
-		andata.getPartiteSvolte().remove(partita);
-		SquadraModel ritorno = partita.getHome();
-		ritorno.getPartiteSvolte().remove(partita);	
-		if(torneoPartita.getPartiteTorneo().size() ==0)
-			torneoPartita.setVincitrice(null);
-		cupRepo.save(torneoPartita);
-		matchRepo.delete(partita);		
-	 */
-	/**
-	 * 
-	 * @param nomeTorneo, utilizzato per creare un nuovo Toreno vuoto al quale in seguito aggiungere nuove partite	 
-	 * 					 la creazione delle partite avviene per singolo Torneo, non appartengono a un torneo diverso.
-	 * @param model
-	 * @return Pagina di visualizzazione dei tornei.
-	 */
+	
 	@RequestMapping(value="/creaTorneo", method=RequestMethod.POST)
 	public String tournAdd(@RequestParam String nomeTorneo, Model model) {
 		TorneoModel torneo = new TorneoModel(nomeTorneo, null, null);
