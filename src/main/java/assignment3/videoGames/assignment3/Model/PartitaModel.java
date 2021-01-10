@@ -18,7 +18,6 @@ public class PartitaModel {
 	SquadraModel home; 	
 	@OneToOne	
 	SquadraModel against; 	
-	
 		
 	public PartitaModel() {
 		super();

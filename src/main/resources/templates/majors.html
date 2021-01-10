@@ -34,7 +34,10 @@
 				<td> 
 					<a th:href="@{/torneo/{torneoId}/partite(torneoId=${major.getTorneoMajor().getId()})}" th:text="${major.getTorneoMajor().getNomeTorneo()}"/></a>	
 				</td>	
-				<td> <a th:href="@{/modificaMajor/{majorId}(majorId=${major.id})}"  method="get">Modifica</a></td>		
+				<td> 
+					<a th:href="@{/modificaMajor/{majorId}(majorId=${major.id})}"  method="get">Modifica</a>
+					<a th:href="@{/eliminaMajor/{majorId}(majorId=${major.id})}"  method="get">Elimina</a>
+				</td>		
 			</tr>
 		</tbody>
 	</table>

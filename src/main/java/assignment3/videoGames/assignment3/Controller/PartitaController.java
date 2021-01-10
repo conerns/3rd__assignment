@@ -31,14 +31,17 @@ public class PartitaController {
 	PartitaRepository matchRepo;
 	
 	@RequestMapping(value="/eliminaPartita/{partitaId}/{torneoId}", method=RequestMethod.GET)
-	public String userDelete(@PathVariable Long partitaId, @PathVariable Long torneoId) {
+	public String partitaDelete(@PathVariable Long partitaId, @PathVariable Long torneoId) {
 		TorneoModel torneoPartita = cupRepo.findById(torneoId).orElse(null);
 		PartitaModel partita = matchRepo.findById(partitaId).orElse(null);	
 		torneoPartita.getPartiteTorneo().remove(partita);		
 		SquadraModel andata = partita.getAgainst();
 		andata.getPartiteSvolte().remove(partita);
 		SquadraModel ritorno = partita.getHome();
-		ritorno.getPartiteSvolte().remove(partita);			
+		ritorno.getPartiteSvolte().remove(partita);	
+		if(torneoPartita.getPartiteTorneo().size() ==0)
+			torneoPartita.setVincitrice(null);
+		cupRepo.save(torneoPartita);
 		matchRepo.delete(partita);		
 		return "redirect:/torneo/{torneoId}/partite";
 	}
@@ -56,6 +59,10 @@ public class PartitaController {
 			@RequestParam String puntiHome,
 			@RequestParam String puntiAgainst,
 			Model model) {	
+		if(squadraHomeId.equals(squadraAgainstId)) {
+			model.addAttribute("erroreGenerato", "Non si può scegliere la stessa squadra");
+			return "/error";
+		}
 		PartitaModel nuova = new PartitaModel(teamRepo.findById(Long.parseLong(squadraHomeId)).orElse(null), 
 				teamRepo.findById(Long.parseLong(squadraAgainstId)).orElse(null), 
 				Integer.parseInt(puntiHome), 
@@ -85,6 +92,8 @@ public class PartitaController {
 			@RequestParam String squadraAgainst,
 			@RequestParam String turniHome,
 			@RequestParam String turniAgainst, Model model) {
+		if(squadraAgainst.equals(squadraHome))
+			return "error";
 		TorneoModel torneoPartita = cupRepo.findById(torneoId).orElse(null);
 		PartitaModel daModificare = matchRepo.findById(partitaId).orElse(null);
 		torneoPartita.getPartiteTorneo().remove(daModificare);

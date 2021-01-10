@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import assignment3.videoGames.assignment3.Model.GiocatoreModel;
+import assignment3.videoGames.assignment3.Model.MajorModel;
 import assignment3.videoGames.assignment3.Model.PartitaModel;
 import assignment3.videoGames.assignment3.Model.SquadraModel;
 import assignment3.videoGames.assignment3.Model.TorneoModel;
@@ -83,7 +84,44 @@ public class TorneoController {
 		cupRepo.save(aggiorna);
 		return "redirect:/tornei";
 	}
-		
+	
+	@RequestMapping(value="/eliminaTorneo/{torneoId}", method=RequestMethod.GET)
+	public String eliminaTorneo(@PathVariable Long torneoId, Model model) {
+		TorneoModel aggiorna = cupRepo.findById(torneoId).orElse(null);
+		MajorModel majorAp = aggiorna.getMajorAppartenenza();
+		List<PartitaModel> partiteTorneo = aggiorna.getPartiteTorneo();		
+		if(partiteTorneo!=null) {
+			for(PartitaModel singola: partiteTorneo) {
+				singola.getAgainst().getPartiteSvolte().remove(singola);
+				singola.getHome().getPartiteSvolte().remove(singola);							
+			}
+			aggiorna.getPartiteTorneo().removeAll(partiteTorneo);
+			matchRepo.deleteAll(partiteTorneo);			
+		}
+		if(majorAp!=null) { //è il torneo di una major
+			majorAp = aggiorna.getMajorAppartenenza();
+			majorAp.setTorneoMajor(null);			
+			majorRepo.save(majorAp);	
+			aggiorna.setMajorAppartenenza(null);
+			cupRepo.save(aggiorna);
+			majorRepo.delete(majorAp);
+		}
+		cupRepo.delete(aggiorna);
+		return "redirect:/tornei";
+	}
+	/**
+	 * TorneoModel torneoPartita = cupRepo.findById(torneoId).orElse(null);
+		PartitaModel partita = matchRepo.findById(partitaId).orElse(null);	
+		torneoPartita.getPartiteTorneo().remove(partita);		
+		SquadraModel andata = partita.getAgainst();
+		andata.getPartiteSvolte().remove(partita);
+		SquadraModel ritorno = partita.getHome();
+		ritorno.getPartiteSvolte().remove(partita);	
+		if(torneoPartita.getPartiteTorneo().size() ==0)
+			torneoPartita.setVincitrice(null);
+		cupRepo.save(torneoPartita);
+		matchRepo.delete(partita);		
+	 */
 	/**
 	 * 
 	 * @param nomeTorneo, utilizzato per creare un nuovo Toreno vuoto al quale in seguito aggiungere nuove partite	 

@@ -23,6 +23,7 @@
 			<th scope="col">Nome Torneo</th>			
 			<th scope="col">Squadra Vincitrice</th>
 			<th scope="col">Storico Partite</th>
+			<th scope="col">Azioni</th>
 		</thead>
 		<tbody>
 			<tr scope = "row" th:each="torneo : ${listaTornei}" >
@@ -31,7 +32,9 @@
 				<td>
 					<a th:href="@{/torneo/{torneoId}/partite(torneoId=${torneo.id})}"/><span>Storico Torneo</span></a>
 				</td>
-				
+				<td>
+					<a th:href="@{/eliminaTorneo/{torneoId}(torneoId=${torneo.id})}"/><span>Elimina Torneo</span></a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
