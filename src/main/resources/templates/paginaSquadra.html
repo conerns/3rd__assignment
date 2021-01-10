@@ -16,19 +16,31 @@
 	  	<div class="card-header">	    
 	  	</div>
 	  	<div class="card-body">
-	    	<h3 class="card-title" th:text="${singolaSquadra.nomeSquadra}"></h3>	    
+		  	<div th:if="${distinzioneSchermata == 'false'}">
+			  	<h3 class="card-title" th:text="'[' + ${singolaSquadra.nameTag} + ']' + ${singolaSquadra.nomeSquadra}"></h3>
+			</div>
+			<div th:if="${distinzioneSchermata == 'true'}">			  	
+	    		<h3 class="card-title" th:text="${singolaSquadra.nomeSquadra}"></h3>	  
+			</div>  
 		    <b>Videogioco</b> : <span th:text=${singolaSquadra.giocoSquadra}></span>
 	    	</br>	
 	    	<hr>
 	    	<h5><p class="card-text">Componenti</p></h5>
-    		<span th:each="componente, iterStat : ${singolaSquadra.componenti}">
-				<a th:href="@{/giocatore/{playerId}(playerId=${componente.id})}"/><span th:text="${componente.nikname}"></span></a>
-				<th:block th:if="${!iterStat.last}">,</th:block>
-			</span>
+	    	<div class="row justify-content-center">
+	    		<div class="col-1" th:each="componente, iterStat : ${singolaSquadra.componenti}">					
+					<a th:href="@{/giocatore/{playerId}(playerId=${componente.id})}"/><span th:text="${componente.nikname}"></span></a>	
+				</div>
+			</div>
 	    	<hr>   
 	  	</div>
-	  	<h4>Partite Squadra</h4>
-	  	<table  class="table table-striped table-bordered " style="text-align:center">
+	  	<div th:if="${distinzioneSchermata == 'true'}">
+		  	<div class="row">
+			  <div class="col"><b>Numero di major vinte: </b><span th:text="${singolaSquadra.numeroMajorVinte}"></span> </div>			  
+			  <div class="col"><b>Totale vincite: </b><span th:text="${singolaSquadra.totalWinning}"></span> </div>
+			</div>
+		</div>		
+	  	<h4 style="padding: 20px; margin-top: 20px; margin-bottom:20px;">Partite Squadra</h4>
+	  	<table class="table table-striped table-bordered " style="text-align:center;">
 			<thead>
 				<th scope="col">Home</th>			
 				<th scope="col">Visitors</th>

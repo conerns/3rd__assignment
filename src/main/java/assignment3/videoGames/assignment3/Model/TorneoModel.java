@@ -19,9 +19,18 @@ public class TorneoModel {
 	private SquadraModel vincitrice;
 	@OneToMany
 	List <PartitaModel> partiteTorneo;
-	
+	@OneToOne
+	MajorModel majorAppartenenza;
 	public TorneoModel() {
 		super();
+	}
+	public TorneoModel(String nomeTorneo,List<PartitaModel> partiteTorneo, SquadraModel squadraVincente, MajorModel majorAppartenenza) {
+		super();
+		this.nomeTorneo = nomeTorneo;
+		this.partiteTorneo = partiteTorneo;
+		majorAppartenenza.setTorneoMajor(this);
+		this.majorAppartenenza = majorAppartenenza;
+		this.vincitrice = squadraVincente;
 	}
 	public TorneoModel(String nomeTorneo, List<PartitaModel> partiteTorneo, SquadraModel squadraVincente) {
 		super();
@@ -53,5 +62,10 @@ public class TorneoModel {
 	public void setVincitrice(SquadraModel vincitrice) {
 		this.vincitrice = vincitrice;
 	}
-	
+	public MajorModel getMajorAppartenenza() {
+		return majorAppartenenza;
+	}
+	public void setMajorAppartenenza(MajorModel majorAppartenenza) {
+		this.majorAppartenenza = majorAppartenenza;
+	}
 }

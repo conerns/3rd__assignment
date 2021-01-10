@@ -52,6 +52,7 @@ public class SquadraController {
 	@RequestMapping("/squadra/{teamId}")
 	public String playerProfile(@PathVariable Long teamId, Model model) {
 		model.addAttribute("singolaSquadra", teamRepo.findById(teamId).orElse(null));
+		model.addAttribute("distinzioneSchermata", new String((teamRepo.findById(teamId).orElse(null) instanceof SquadraProfessionistaModel) +""));
 		return "paginaSquadra";
 	}
 	

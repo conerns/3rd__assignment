@@ -33,7 +33,7 @@
 	    	<p class="card-text">Squadra</p>	    		
 	    		<div th:if="${singoloUtente.getSquadra()!=null}">
 				   <a th:href="@{/squadra/{teamId}(teamId=${singoloUtente.squadra.id})}"/><span th:text="${singoloUtente.squadra.nomeSquadra}"></span></a>
-				   <h3>Storico Partite del giocatore</h3>
+				   <h3 style="padding: 20px; margin-top: 20px; margin-bottom:20px;">Storico Partite del giocatore</h3>
 				  <table  class="table table-striped table-bordered " style="text-align:center">
 					<thead>
 						<th scope="col">Home</th>			
