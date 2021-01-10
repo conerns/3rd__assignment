@@ -1,8 +1,5 @@
 package assignment3.videoGames.assignment3.Model;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -10,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class MajorModel {
@@ -19,30 +17,20 @@ public class MajorModel {
 	private String paeseSvolgimento;
 	private String organizzatore;
 	private int montepremi;
-	private LocalDate dataTorneo;
 	@ManyToMany
-	private List<SquadraModel> squadrePartecipanti;
-	
+	private List<SquadraProfessionistaModel> squadrePartecipanti;
+	@OneToOne 
+	private TorneoModel torneoMajor;
 	public MajorModel() {
 		super(); 
 	}
 	
-	public MajorModel(String paeseSvolgimento, String organizzatore, int montepremi, List<SquadraModel> squadrePartecipanti) {
-		this(paeseSvolgimento, organizzatore, montepremi, squadrePartecipanti, (LocalDate) java.time.LocalDate.now());				
-	}
-
-	public MajorModel(String paeseSvolgimento, String organizzatore, int montepremi, List<SquadraModel> squadrePartecipanti, LocalDate dataTorneo) {
+	public MajorModel(String paeseSvolgimento, String organizzatore, int montepremi, List<SquadraProfessionistaModel> squadrePartecipanti) {
 		super();		
 		this.paeseSvolgimento = paeseSvolgimento;
 		this.organizzatore = organizzatore;
 		this.montepremi = montepremi;
-		for(SquadraModel singola : squadrePartecipanti) {
-			if (squadrePartecipanti instanceof SquadraProfessionistaModel) {
-				SquadraProfessionistaModel new_name = (SquadraProfessionistaModel) squadrePartecipanti;
-				squadrePartecipanti.add(new_name);
-			}
-		}
-		this.dataTorneo = dataTorneo;
+		this.squadrePartecipanti = squadrePartecipanti;
 		
 	}
 	public long getId() {
@@ -61,10 +49,10 @@ public class MajorModel {
 	public void setPaeseSvolgimento(String paeseSvolgimento) {
 		this.paeseSvolgimento = paeseSvolgimento;
 	}
-	public List<SquadraModel> getSquadrePartecipanti() {
+	public List<SquadraProfessionistaModel> getSquadrePartecipanti() {
 		return squadrePartecipanti;
 	}
-	public void setSquadrePartecipanti(List<SquadraModel> squadrePartecipanti) {
+	public void setSquadrePartecipanti(List<SquadraProfessionistaModel> squadrePartecipanti) {
 		this.squadrePartecipanti = squadrePartecipanti;
 	}
 	public void setId(long id) {
@@ -76,7 +64,10 @@ public class MajorModel {
 	public void setMontepremi(int montepremi) {
 		this.montepremi = montepremi;
 	}
-	public LocalDate getDataTorneo() {
-		return dataTorneo;
+	public TorneoModel getTorneoMajor() {
+		return torneoMajor;
+	}
+	public void setTorneoMajor(TorneoModel torneoMajor) {
+		this.torneoMajor = torneoMajor;
 	}
 }

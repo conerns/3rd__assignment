@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import assignment3.videoGames.assignment3.Model.GiocatoreModel;
+import assignment3.videoGames.assignment3.Model.MajorModel;
 import assignment3.videoGames.assignment3.Model.PartitaModel;
 import assignment3.videoGames.assignment3.Model.SquadraModel;
 import assignment3.videoGames.assignment3.Model.TorneoModel;
@@ -83,14 +84,55 @@ public class TorneoController {
 		cupRepo.save(aggiorna);
 		return "redirect:/tornei";
 	}
-		
-	/**
-	 * 
-	 * @param nomeTorneo, utilizzato per creare un nuovo Toreno vuoto al quale in seguito aggiungere nuove partite	 
-	 * 					 la creazione delle partite avviene per singolo Torneo, non appartengono a un torneo diverso.
-	 * @param model
-	 * @return Pagina di visualizzazione dei tornei.
-	 */
+	
+	@RequestMapping(value="/modificaTorneoMajor/{torneoId}", method=RequestMethod.GET)
+	public String modificaTorneoMajor(@PathVariable Long torneoId, Model model) {
+		TorneoModel aggiorna = cupRepo.findById(torneoId).orElse(null);
+		model.addAttribute("azioniTorneo", "updateTorneoMajor");
+		model.addAttribute("daAggiornare", aggiorna);
+		model.addAttribute("vinceSe", (aggiorna.getMajorAppartenenza().getSquadrePartecipanti().size()>1));
+		return "azioniTorneo";
+	}
+	
+	
+	@RequestMapping(value="/aggiornaTorneoMajor/{torneoId}", method=RequestMethod.GET)
+	public String aggiornaTorneoMajor(@PathVariable Long torneoId,
+			@RequestParam String nomeTorneo,
+			@RequestParam(value = "vincitrice", required = false) String vincitrice,
+			Model model) {
+		TorneoModel aggiorna = cupRepo.findById(torneoId).orElse(null);
+		aggiorna.setNomeTorneo(nomeTorneo);
+		if(vincitrice!=null)
+			aggiorna.setVincitrice(teamRepo.findById(Long.parseLong(vincitrice)).orElse(null));
+		cupRepo.save(aggiorna);
+		return "redirect:/tornei";
+	}
+	
+	@RequestMapping(value="/eliminaTorneo/{torneoId}", method=RequestMethod.GET)
+	public String eliminaTorneo(@PathVariable Long torneoId, Model model) {
+		TorneoModel aggiorna = cupRepo.findById(torneoId).orElse(null);
+		MajorModel majorAp = aggiorna.getMajorAppartenenza();
+		List<PartitaModel> partiteTorneo = aggiorna.getPartiteTorneo();		
+		if(partiteTorneo!=null) {
+			for(PartitaModel singola: partiteTorneo) {
+				singola.getAgainst().getPartiteSvolte().remove(singola);
+				singola.getHome().getPartiteSvolte().remove(singola);							
+			}
+			aggiorna.getPartiteTorneo().removeAll(partiteTorneo);
+			matchRepo.deleteAll(partiteTorneo);			
+		}
+		if(majorAp!=null) { //è il torneo di una major
+			majorAp = aggiorna.getMajorAppartenenza();
+			majorAp.setTorneoMajor(null);			
+			majorRepo.save(majorAp);	
+			aggiorna.setMajorAppartenenza(null);
+			cupRepo.save(aggiorna);
+			majorRepo.delete(majorAp);
+		}
+		cupRepo.delete(aggiorna);
+		return "redirect:/tornei";
+	}
+	
 	@RequestMapping(value="/creaTorneo", method=RequestMethod.POST)
 	public String tournAdd(@RequestParam String nomeTorneo, Model model) {
 		TorneoModel torneo = new TorneoModel(nomeTorneo, null, null);

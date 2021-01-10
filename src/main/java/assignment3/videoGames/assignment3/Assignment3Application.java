@@ -1,6 +1,5 @@
 package assignment3.videoGames.assignment3;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import assignment3.videoGames.assignment3.Model.GiocatoreModel;
 import assignment3.videoGames.assignment3.Model.MajorModel;
@@ -43,53 +39,34 @@ public class Assignment3Application implements CommandLineRunner{
 	}
 	
 	@Override
-	public void run(String... args) throws Exception {
-		
+	public void run(String... args) throws Exception {		
 		GiocatoreModel teo = new GiocatoreModel("ed", "Matteo", "Pisano");
 		GiocatoreModel danu = new GiocatoreModel("edd", "Andrei", "Taraboi");
 		GiocatoreModel io = new GiocatoreModel("eddy", "Daniel", "Taraboi");
 
-		GiocatoreModel g1 = new GiocatoreModel("gl1ve", "Nome", "Cognome");
-		GiocatoreModel g2 = new GiocatoreModel("kennyS", "Nome", "Cognome");
-		GiocatoreModel g3 = new GiocatoreModel("S1mple", "Nome", "Cognome");
+		GiocatoreModel g1 = new GiocatoreModel("dev1ce", "Nicolai Hvilshøj", "Reedtz");
+		GiocatoreModel g2 = new GiocatoreModel("dupreeh", "Peter Rothmann", "Rasmussen");
+		GiocatoreModel g3 = new GiocatoreModel("Xyp9x", "Andreas", "Højsleth");	
+		GiocatoreModel g4 = new GiocatoreModel("gla1ve", "Lukas Egholm", "Rossander");
+		GiocatoreModel g5 = new GiocatoreModel("Magisk", "Emil Hoffmann", "Reif");	
 		
-		playerRepo.save(teo);
-		playerRepo.save(danu);
-		playerRepo.save(io);	
-		playerRepo.save(g1);
-		playerRepo.save(g2);
-		playerRepo.save(g3);
-		
-		List <GiocatoreModel> anchequi = new LinkedList<>();
-		List <GiocatoreModel> professionisti = new LinkedList<>();
-		
-		
+		playerRepo.saveAll(List.of(teo,danu,io,g1,g2,g3,g4,g5));	
+		List <GiocatoreModel> amatoriali = new LinkedList<>();
+		List <GiocatoreModel> professionisti = new LinkedList<>();			
 		teo.setAmici(List.of(danu, io));
 		danu.setAmici(List.of(teo, io));
-		io.setAmici(List.of(teo, danu));
-		
-		playerRepo.save(teo);
-		playerRepo.save(danu);
-		playerRepo.save(io);	
-		playerRepo.save(g1);
-		playerRepo.save(g2);
-		playerRepo.save(g3);
-		
-		anchequi.add(danu);		
-		anchequi.add(io);
-		anchequi.add(teo);
-				
-		
-		professionisti.add(g1);
-		professionisti.add(g2);
-		professionisti.add(g3);
+		io.setAmici(List.of(teo, danu));		
+		playerRepo.saveAll(List.of(teo,danu,io,g1,g2,g3,g4,g5));		
+		amatoriali.add(danu);		
+		amatoriali.add(io);
+		amatoriali.add(teo);
+		professionisti.addAll(List.of(g1,g2,g3,g4,g5));
 		/*Abbiamo una squadra Amatoriale e una professionista*/
-		SquadraModel mache = new SquadraProfessionistaModel( "Astralis", "CS:GO", professionisti, 2, 248447);		
-		SquadraModel prova = new SquadraAmatorialeModel("Gli Edd", "CS:GO", anchequi,"TAXI");
+		SquadraProfessionistaModel mache = new SquadraProfessionistaModel( "Astralis", "CS:GO", professionisti, 4, 8699634);		
+		SquadraAmatorialeModel prova = new SquadraAmatorialeModel("Gli Edd", "CS:GO", amatoriali, "TAXI");
 		
 		PartitaModel andata = new PartitaModel(mache,prova, 12, 16);
-		PartitaModel ritorno = new PartitaModel(prova,mache, 16, 10);
-		
+		PartitaModel ritorno = new PartitaModel(prova,mache, 16, 10);		
 		
 		TorneoModel torneoSingolo = new TorneoModel("Bronze Cup 2014- Winter Edition", List.of(andata, ritorno), prova);
 		teamRepo.save(prova);
@@ -98,16 +75,12 @@ public class Assignment3Application implements CommandLineRunner{
 		g1.setSquadra(mache);
 		g2.setSquadra(mache);
 		g3.setSquadra(mache);
+		g4.setSquadra(mache);
+		g5.setSquadra(mache);
 		danu.setSquadra(prova);
 		teo.setSquadra(prova);
 		io.setSquadra(prova);
-		
-		playerRepo.save(teo);
-		playerRepo.save(danu);
-		playerRepo.save(io);	
-		playerRepo.save(g1);
-		playerRepo.save(g2);
-		playerRepo.save(g3);
+		playerRepo.saveAll(List.of(teo,danu,io,g1,g2,g3,g4,g5));
 		
 		matchRepo.save(andata);	
 		matchRepo.save(ritorno);
@@ -116,10 +89,11 @@ public class Assignment3Application implements CommandLineRunner{
 		teamRepo.save(mache);
 		teamRepo.save(prova);
 		
-		cupRepo.save(torneoSingolo);	
-		List <SquadraModel> prof = new LinkedList<SquadraModel>();
-		prof.add(prova);
-		MajorModel kato2014 = new MajorModel("Polonia", "Intel", 500000, prof);
+		cupRepo.save(torneoSingolo);
+		MajorModel kato2014 = new MajorModel("Polonia", "Intel", 50000, List.of(mache));
+		majorRepo.save(kato2014);
+		TorneoModel torneoMajor = new TorneoModel("Bronze 2015 - Winter Edition", null, null, kato2014);
+		cupRepo.save(torneoMajor);
 		majorRepo.save(kato2014);
 	}
 }

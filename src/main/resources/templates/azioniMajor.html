@@ -1,35 +1,35 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Azioni giocatore</title>
+	<title>Azioni Major</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div th:if="${azionegiocatore == 'inserimento'}">
+	<div th:if="${azioneMajor == 'modifica'}">
 		<nav class="navbar navbar-light bg-light">
 		  <div class="container-fluid">
-		    <span class="navbar-brand mb-0 h1">Nuovo giocatore</span>
+		    <span class="navbar-brand mb-0 h1">Modifica informazioni major</span>
 		  </div>
 		</nav>	
-	  	<form th:action="@{/creaGiocatore}" method="post" enctype="multipart/form-data" >
+	  	<form th:action="@{/aggiornamentoMajor/{majorId}(majorId=${majorDaAggiornare.id})}" method="get" enctype="multipart/form-data" >
 	  	<fieldset>
 			<div class="form-row">
-				<div class="form-group col-md-10 offset-md-1">
-					<label for="inputNickname">Nickname</label>
-					<input type="text" class="form-control" placeholder="Inserire Nickname" name="nikname" id="inputNickname"/>
-				</div>
-			</div>
-			<div class="form-row">
 				<div class="form-group col-md-5 offset-md-1">
-		    		<label for="inputNome">Nome giocatore</label>
-	        		<input type="text" class="form-control" placeholder="Inserire nome" name="nome" id="inputNome"/>
+		    		<label for="inputPaese">Paese di svolgimento</label>
+	        		<input type="text" class="form-control" th:value="${majorDaAggiornare.paeseSvolgimento}" name="paeseSvolgimento" id="inputPaese"/>
 		    	</div>
 				<div class="form-group col-md-5">
-		    		<label for="inputCognome">Cognome giocatore</label>
-	        		<input type="text" class="form-control" placeholder="Inserire cognome" name="cognome" id="inputCognome"/>
+		    		<label for="inputOrg">Organizzatore</label>
+	        		<input type="text" class="form-control" th:value="${majorDaAggiornare.organizzatore}" name="organizzatore" id="inputOrg"/>
 		    	</div>
-			</div>
+			</div>	
+			<div class="form-row">
+				<div class="form-group col-md-10 offset-md-1">
+		    		<label for="inputPaese">Montepremi</label>
+	        		<input type="number" min="0" class="form-control" th:value="${majorDaAggiornare.montepremi}" name="montepremi" id="inputPaese"/>
+		    	</div>
+			</div>		
 		</fieldset>
 		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
 		</form>
@@ -42,26 +42,31 @@
 			</nav>
 		</footer>
 		<!-- Footer -->
-	</div>	
-	<!-- Area utilizzata per aggioranre le informazioni di un giocatore già	presente all'interno del database-->	
-	<div th:if="${azionegiocatore == 'aggiornamento'}">
+	</div>
+	<!-- Creazione Partita, eseguita ora in azioniPartita e non azioniTorneo-->	
+	<div th:if="${azioniPartita == 'creaPartita'}">
 		<nav class="navbar navbar-light bg-light">
 		  <div class="container-fluid">
-		    <span class="navbar-brand mb-0 h1">Aggiorna dati giocatore</span>
+		    <span class="navbar-brand mb-0 h1">Aggiorna dati partita</span>
 		  </div>
 		</nav>	
-	  	<form th:action="@{/aggiornaGiocatore/{playerId}(playerId=${giocatore.id})}" method="get" enctype="multipart/form-data" >
+	  	<form th:action="@{/creaPartita/{torneoId}(torneoId=${torneoPartita.id})}" method="get" enctype="multipart/form-data" >
 	  	<fieldset>
 			<div class="form-row">
 				<div class="form-group col-md-5 offset-md-1">
-					<label for="inputNickname">Nickname</label>
-					<input type="text" class="form-control" th:value="${giocatore.nikname}" name="nickname" id="inputNickname"/>
-				</div>
-				<div class="form-group col-md-5">
-					<label for="squadra">Squadra</label>
-					<select class="form-control" name="squadraId" id = "squadraId">
-				    	<option value="null">Nessuna squadra</option>
-				    	<option th:each="squadra : ${squadreAggiornamento}"
+					<label for="squadraHomeId">Scelta squadra in casa</label>
+					<select class="form-control" name="squadraHomeId" id = "squadraHomeId">
+				    	<option th:each="squadra : ${squadreScelta}"
+				    			th:value="${squadra.id}"
+				    			th:name="${squadraId}"
+				    	 		th:text="${squadra.nomeSquadra}">
+				    	</option>
+				    </select>
+    			</div>
+    			<div class="form-group col-md-5">
+					<label for="squadraAgainstId">Scelta squadra in trasferta</label>
+					<select class="form-control" name="squadraAgainstId" id = "squadraAgainstId">
+				    	<option th:each="squadra : ${squadreScelta}"
 				    			th:value="${squadra.id}"
 				    			th:name="${squadraId}"
 				    	 		th:text="${squadra.nomeSquadra}">
@@ -71,14 +76,14 @@
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-5 offset-md-1">
-		    		<label for="inputNome">Nome giocatore</label>
-	        		<input type="text" class="form-control" th:value="${giocatore.nome}" name="nome" id="inputNome"/>
-		    	</div>
-				<div class="form-group col-md-5">
-		    		<label for="inputCognome">Cognome giocatore</label>
-	        		<input type="text" class="form-control" th:value="${giocatore.cognome}" name="cognome" id="inputCognome"/>
-		    	</div>
-			</div>
+					<label for="puntiHome">Round vinti casa</label>
+					<input type="number" min="0" max="16" class="form-control" placeholder="Inserire round vinti" name="puntiHome" id = "puntiHome">
+    			</div>
+    			<div class="form-group col-md-5">
+					<label for="squadra">Round vinti trasferta</label>
+					<input type="number" min="0" max="16" class="form-control" placeholder="Inserire round vinti" name="puntiAgainst" id = "puntiAgainst">
+    			</div>
+			</div>						
 		</fieldset>
 		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
 		</form>

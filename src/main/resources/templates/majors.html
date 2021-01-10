@@ -3,7 +3,7 @@
 <head> 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	<title>Squadre</title> 
+	<title>Majors</title> 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -23,14 +23,21 @@
 			<th scope="col">Organizzatore evento</th>			
 			<th scope="col">Montepremi</th>
 			<th scope="col">Paese di svolgimento</th>	
-			<th scope="col">Data di svolgimento</th>
+			<th scope="col">Nome del torneo</th>
+			<th scope="col">Azioni</th>
 		</thead>
 		<tbody>
 			<tr scope = "row" th:each="major : ${majors}" >
 				<td th:text="${major.organizzatore}" style="text-align:center"></td>			
 				<td th:text="${major.montepremi}"></td>				
-				<td th:text="${major.paeseSvolgimento}"</td>	
-				<td th:text="${major.dataTorneo}"</td>			
+				<td th:text="${major.paeseSvolgimento}"</td>
+				<td> 
+					<a th:href="@{/torneo/{torneoId}/partite(torneoId=${major.getTorneoMajor().getId()})}" th:text="${major.getTorneoMajor().getNomeTorneo()}"/></a>	
+				</td>	
+				<td> 
+					<a th:href="@{/modificaMajor/{majorId}(majorId=${major.id})}"  method="get">Modifica</a>
+					<a th:href="@{/eliminaMajor/{majorId}(majorId=${major.id})}"  method="get">Elimina</a>
+				</td>		
 			</tr>
 		</tbody>
 	</table>
@@ -39,6 +46,7 @@
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
 	    <a class="navbar-brand" th:href="@{/}">Home</a>
+	    <a href="#">Crea</a>
 	  </div>
 	</nav>
 	</footer>
