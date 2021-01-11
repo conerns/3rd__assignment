@@ -1,5 +1,6 @@
 package assignment3.videoGames.assignment3.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,8 +123,44 @@ public class GiocatoreController {
         GiocatoreModel nuovoGiocatore = new GiocatoreModel(nikname, nome, cognome);
         playerRepo.save(nuovoGiocatore);        
         return "redirect:/listaGiocatori";
-  }
+	}
 	
-
+	@RequestMapping(value="/aggiungiAmico/{playerId}")
+	public String aggiungiAmico(@PathVariable Long playerId, Model model) {
+		model.addAttribute("azionegiocatore", "nuovoAmico");
+		GiocatoreModel singolo = playerRepo.findById(playerId).orElse(null);
+		List<GiocatoreModel> daScegliere = new ArrayList<GiocatoreModel>();
+		for(GiocatoreModel tutti : playerRepo.findAll()) {
+			if(!tutti.getAmici().contains(singolo) && !daScegliere.contains(tutti)) 
+				daScegliere.add(tutti);			
+		}
+		daScegliere.remove(singolo);
+		model.addAttribute("giocatore", playerRepo.findById(playerId).orElse(null));
+		model.addAttribute("amiciScelta" , daScegliere);
+		return "azioniGiocatore";
+	}
+	@RequestMapping(value="/aggiungiAmicoOperazione/{playerId}")
+	public String aggiungiAmicoOp(@PathVariable Long playerId, 
+			@RequestParam String amicoId,
+			Model model) {
+		GiocatoreModel giocatore = playerRepo.findById(playerId).orElse(null);
+		GiocatoreModel amico = playerRepo.findById(Long.parseLong(amicoId)).orElse(null);
+		giocatore.getAmici().add(amico);
+		amico.getAmici().add(giocatore);
+		playerRepo.saveAll(List.of(giocatore,amico));
+		return "redirect:/giocatore/{playerId}";
+	}
+	@RequestMapping(value="/eliminaAmico/{togliA}/{togliB}")
+	public String aggiungiAmicoOp(@PathVariable Long togliA,
+			@PathVariable Long togliB,
+			Model model) {
+		GiocatoreModel giocatore = playerRepo.findById(togliA).orElse(null);
+		GiocatoreModel amico = playerRepo.findById(togliB).orElse(null);
+		giocatore.getAmici().remove(amico);
+		amico.getAmici().remove(giocatore);
+		playerRepo.saveAll(List.of(giocatore,amico));
+		return "redirect:/giocatore/{togliA}";
+	}
+	
 }
 

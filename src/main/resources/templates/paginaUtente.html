@@ -24,10 +24,15 @@
 			    Cognome : <span th:text=${singoloUtente.cognome}></span> 
 	    	</br>	
 	    	<hr>
-	    	<p class="card-text">Amici</p>
+	    	<span class="card-text">Amici</span>
+	    	<button type="button" class="btn btn-light">
+					<a th:href="@{/aggiungiAmico/{playerId}(playerId=${singoloUtente.id})}">Aggiungi amico</a>
+			</button><div style="margin-top=10px"></p>
 		    <span th:each="amico, iterStat : ${singoloUtente.getAmici()}">
 				<a th:href="@{/giocatore/{playerId}(playerId=${amico.getId()})}"/><span th:text="${amico.getNikname()}"></span></a>
-				<th:block th:if="${!iterStat.last}">,</th:block>
+				<button type="button" class="btn btn-light">
+					<a th:href="@{/eliminaAmico/{togliA}/{togliB}(togliA=${singoloUtente.id}, togliB=${amico.getId()})}">Rimuovi amico</a>
+				</button></br>
 			</span>
 	    	<hr>   
 	    	<p class="card-text">Squadra</p>	    		
