@@ -24,7 +24,7 @@ public class TorneoModel {
 	public TorneoModel() {
 		super();
 	}
-	public TorneoModel(String nomeTorneo,List<PartitaModel> partiteTorneo, SquadraModel squadraVincente, MajorModel majorAppartenenza) {
+	public TorneoModel(String nomeTorneo, List<PartitaModel> partiteTorneo, SquadraModel squadraVincente, MajorModel majorAppartenenza) {
 		super();
 		this.nomeTorneo = nomeTorneo;
 		this.partiteTorneo = partiteTorneo;

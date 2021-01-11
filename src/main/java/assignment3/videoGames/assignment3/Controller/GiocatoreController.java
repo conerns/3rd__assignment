@@ -39,6 +39,7 @@ public class GiocatoreController {
 		model.addAttribute("GiocatoriLista", playerRepo.findAll());
 		return "giocatori";
 	}		
+	
 	@RequestMapping(value="/modificaGiocatore/{playerId}", method=RequestMethod.GET)
 	public String modificaPlayer( @PathVariable Long playerId, Model model) {
 		GiocatoreModel giocatore = playerRepo.findById(playerId).orElse(null);		 
@@ -71,17 +72,14 @@ public class GiocatoreController {
 				giocatore.setSquadra(null); 
 				teamRepo.save(removePlayer);
 			}
-			//da verificare se non ha mai avuto squadre
 		}		
 		else { 
 			//ho una squadra selezionata			
 			if(giocatore.getSquadra()!=null) { // aveva una squadra prima 
 				removePlayer = teamRepo.findById(Long.parseLong(squadraId)).orElse(null); 
-				SquadraModel squadraAttuale = teamRepo.findById(giocatore.getSquadra().getId()).orElse(null);
-				
+				SquadraModel squadraAttuale = teamRepo.findById(giocatore.getSquadra().getId()).orElse(null);				
 				if(squadraAttuale.getId() == removePlayer.getId())//se è quella di prima non faccio nulla
 					return "redirect:/giocatore/{playerId}";
-				
 				//altrimenti, cambio squadra del giocatore
 				squadraAttuale.getComponenti().remove(giocatore);
 				removePlayer.getComponenti().add(giocatore); //lo rimuovo dalla squadra attuale

@@ -43,47 +43,41 @@
 		</footer>
 		<!-- Footer -->
 	</div>
-	<!-- Creazione Partita, eseguita ora in azioniPartita e non azioniTorneo-->	
-	<div th:if="${azioniPartita == 'creaPartita'}">
+	<div th:if="${azioneMajor == 'inserimento'}">
 		<nav class="navbar navbar-light bg-light">
 		  <div class="container-fluid">
-		    <span class="navbar-brand mb-0 h1">Aggiorna dati partita</span>
+		    <span class="navbar-brand mb-0 h1">Creazione major</span>
 		  </div>
 		</nav>	
-	  	<form th:action="@{/creaPartita/{torneoId}(torneoId=${torneoPartita.id})}" method="get" enctype="multipart/form-data" >
+	  	<form th:action="@{/creaMajor}" enctype="multipart/form-data" >
 	  	<fieldset>
 			<div class="form-row">
 				<div class="form-group col-md-5 offset-md-1">
-					<label for="squadraHomeId">Scelta squadra in casa</label>
-					<select class="form-control" name="squadraHomeId" id = "squadraHomeId">
-				    	<option th:each="squadra : ${squadreScelta}"
-				    			th:value="${squadra.id}"
-				    			th:name="${squadraId}"
-				    	 		th:text="${squadra.nomeSquadra}">
-				    	</option>
-				    </select>
-    			</div>
-    			<div class="form-group col-md-5">
-					<label for="squadraAgainstId">Scelta squadra in trasferta</label>
-					<select class="form-control" name="squadraAgainstId" id = "squadraAgainstId">
-				    	<option th:each="squadra : ${squadreScelta}"
-				    			th:value="${squadra.id}"
-				    			th:name="${squadraId}"
-				    	 		th:text="${squadra.nomeSquadra}">
-				    	</option>
-				    </select>
-    			</div>
-			</div>
+		    		<label for="inputPaese">Paese di svolgimento</label>
+	        		<input type="text" class="form-control" placeholder="Inserire paese" name="paeseSvolgimento" id="inputPaese"/>
+		    	</div>
+				<div class="form-group col-md-5">
+		    		<label for="inputOrg">Organizzatore</label>
+	        		<input type="text" class="form-control" placeholder="Inserire organizzatore" name="organizzatore" id="inputOrg"/>
+		    	</div>
+			</div>	
 			<div class="form-row">
-				<div class="form-group col-md-5 offset-md-1">
-					<label for="puntiHome">Round vinti casa</label>
-					<input type="number" min="0" max="16" class="form-control" placeholder="Inserire round vinti" name="puntiHome" id = "puntiHome">
-    			</div>
-    			<div class="form-group col-md-5">
-					<label for="squadra">Round vinti trasferta</label>
-					<input type="number" min="0" max="16" class="form-control" placeholder="Inserire round vinti" name="puntiAgainst" id = "puntiAgainst">
-    			</div>
-			</div>						
+				<div class="form-group col-md-10 offset-md-1">
+		    		<label for="inputPaese">Montepremi</label>
+	        		<input type="number" min="0" class="form-control" placeholder="Inserire montepremi" name="montepremi" id="inputPaese"/>
+		    	</div>
+			</div>
+			<nav class="navbar navbar-light bg-light">
+			  	<div class="container-fluid">
+			    	<span class="navbar-brand mb-0 h1">Torneo della major</span>
+			  	</div>
+			</nav>	
+			<div class="form-row">
+				<div class="form-group col-md-10 offset-md-1">
+		    		<label for="inputPaese">Nome del Torneo</label>
+	        		<input type="text" min="0" class="form-control" placeholder="Inserire nome torneo" name="nomeTorneo" id="inputPaese"/>
+		    	</div>
+			</div>		
 		</fieldset>
 		<button type="submit" class="btn btn-primary col-md-2 offset-md-5">Salva modifiche</button>
 		</form>

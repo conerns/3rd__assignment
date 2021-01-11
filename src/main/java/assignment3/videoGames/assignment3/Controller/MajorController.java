@@ -14,6 +14,7 @@ import assignment3.videoGames.assignment3.Model.GiocatoreModel;
 import assignment3.videoGames.assignment3.Model.MajorModel;
 import assignment3.videoGames.assignment3.Model.PartitaModel;
 import assignment3.videoGames.assignment3.Model.SquadraModel;
+import assignment3.videoGames.assignment3.Model.SquadraProfessionistaModel;
 import assignment3.videoGames.assignment3.Model.TorneoModel;
 import assignment3.videoGames.assignment3.Repository.MajorRespository;
 import assignment3.videoGames.assignment3.Repository.SquadraRepository;
@@ -33,7 +34,7 @@ public class MajorController {
 		return "majors";
 	}
 	@RequestMapping(value="/modificaMajor/{majorId}",method=RequestMethod.GET)
-	public String teamRepository(@PathVariable Long majorId,Model model) {
+	public String modifyMajor(@PathVariable Long majorId,Model model) {
 		model.addAttribute("azioneMajor", "modifica");
 		model.addAttribute("majorDaAggiornare", majorRepo.findById(majorId).orElse(null));
 		return "azioniMajor";
@@ -79,5 +80,31 @@ public class MajorController {
 		cupRepo.delete(torneoMajor); //se elimino la major, il torneo associato smette di esistere
 		return "redirect:/majors";
 	}
+	
+	@RequestMapping(value="/inserimentoMajor", method=RequestMethod.GET)
+	public String aggiuntaMajor(Model model) {		
+		model.addAttribute("azioneMajor", "inserimento");
+		return "azioniMajor";
+	}
+	@RequestMapping(value="/creaMajor")
+	public String majorAggiungi(@RequestParam String paeseSvolgimento,
+			@RequestParam String organizzatore,
+			@RequestParam String montepremi,
+			@RequestParam String nomeTorneo,
+			Model model) {
+		if(paeseSvolgimento.equals("") || 
+				organizzatore.equals("") ||
+				montepremi.equals("")||
+				nomeTorneo.equals("")) {
+			model.addAttribute("erroreGenerato", "Campi mancanti durante la creazione");
+			return "/error";
+		}
+		MajorModel major = new MajorModel(paeseSvolgimento, organizzatore, Integer.parseInt(montepremi), null);
+		majorRepo.save(major);
+		TorneoModel torneo = new TorneoModel(nomeTorneo, null, null, major);
+        cupRepo.save(torneo);    
+        majorRepo.save(major);
+        return "redirect:/majors";
+	}	
 	
 }
