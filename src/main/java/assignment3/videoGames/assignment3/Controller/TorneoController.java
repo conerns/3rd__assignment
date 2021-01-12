@@ -16,6 +16,7 @@ import assignment3.videoGames.assignment3.Model.GiocatoreModel;
 import assignment3.videoGames.assignment3.Model.MajorModel;
 import assignment3.videoGames.assignment3.Model.PartitaModel;
 import assignment3.videoGames.assignment3.Model.SquadraModel;
+import assignment3.videoGames.assignment3.Model.SquadraProfessionistaModel;
 import assignment3.videoGames.assignment3.Model.TorneoModel;
 import assignment3.videoGames.assignment3.Repository.GiocatoreRepository;
 import assignment3.videoGames.assignment3.Repository.MajorRespository;
@@ -101,10 +102,15 @@ public class TorneoController {
 			@RequestParam(value = "vincitrice", required = false) String vincitrice,
 			Model model) {
 		TorneoModel aggiorna = cupRepo.findById(torneoId).orElse(null);
+		SquadraProfessionistaModel vince;
 		aggiorna.setNomeTorneo(nomeTorneo);
-		if(vincitrice!=null)
-			aggiorna.setVincitrice(teamRepo.findById(Long.parseLong(vincitrice)).orElse(null));
-		cupRepo.save(aggiorna);
+		if(vincitrice!=null) {
+			vince = (SquadraProfessionistaModel) teamRepo.findById(Long.parseLong(vincitrice)).orElse(null);
+			aggiorna.setVincitrice(vince);
+			vince.setNumeroMajorVinte(vince.getNumeroMajorVinte()+1);
+			cupRepo.save(aggiorna);
+			teamRepo.save(vince);
+		}
 		return "redirect:/tornei";
 	}
 	
@@ -139,5 +145,11 @@ public class TorneoController {
         cupRepo.save(torneo);    
         return "redirect:/tornei";
 	}	
+	
+	@RequestMapping(value="/cercaT", method=RequestMethod.GET)
+	public String getRequired(@RequestParam String componenti, Model model) {
+	model.addAttribute("listaTornei", cupRepo.findByVincitrice_DimensioneSquadra(Long.parseLong(componenti)));
+    return "tornei";
+	}
 	
 }

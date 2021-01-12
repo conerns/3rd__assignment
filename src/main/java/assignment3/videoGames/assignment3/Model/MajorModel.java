@@ -21,6 +21,7 @@ public class MajorModel {
 	private List<SquadraProfessionistaModel> squadrePartecipanti;
 	@OneToOne 
 	private TorneoModel torneoMajor;
+	
 	public MajorModel() {
 		super(); 
 	}
@@ -54,9 +55,6 @@ public class MajorModel {
 	}
 	public void setSquadrePartecipanti(List<SquadraProfessionistaModel> squadrePartecipanti) {
 		this.squadrePartecipanti = squadrePartecipanti;
-	}
-	public void setId(long id) {
-		this.id = id;
 	}
 	public void setOrganizzatore(String organizzatore) {
 		this.organizzatore = organizzatore;

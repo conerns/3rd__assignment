@@ -44,8 +44,9 @@ public class PartitaController {
 		andata.getPartiteSvolte().remove(partita);
 		SquadraModel ritorno = partita.getHome();
 		ritorno.getPartiteSvolte().remove(partita);	
-		if(torneoPartita.getPartiteTorneo().size() ==0)
+		if(torneoPartita.getPartiteTorneo().size() == 0)
 			torneoPartita.setVincitrice(null);
+		torneoPartita.setNumeroPartite(torneoPartita.getNumeroPartite()-1);
 		cupRepo.save(torneoPartita);
 		matchRepo.delete(partita);		
 		return "redirect:/torneo/{torneoId}/partite";
@@ -104,6 +105,7 @@ public class PartitaController {
 		}
 		majorRepo.save(majorTorneo);
 		torneo.setMajorAppartenenza(majorTorneo);
+		torneo.setNumeroPartite(torneo.getNumeroPartite()+1);
 		cupRepo.save(torneo);
 		majorRepo.save(majorTorneo);
 		return "redirect:/torneo/{torneoId}/partite";
@@ -130,6 +132,7 @@ public class PartitaController {
 		matchRepo.save(nuova);
 		teamRepo.save(nuova.getAgainst());
 		teamRepo.save(nuova.getHome());
+		torneo.setNumeroPartite(torneo.getNumeroPartite()+1);
 		cupRepo.save(torneo);
 		return "redirect:/torneo/{torneoId}/partite";
 	}

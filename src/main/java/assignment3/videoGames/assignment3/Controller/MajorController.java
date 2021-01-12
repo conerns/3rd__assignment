@@ -33,6 +33,12 @@ public class MajorController {
 		model.addAttribute("majors", majorRepo.findAll());		
 		return "majors";
 	}
+	@RequestMapping(value="/majorsC")
+	public String majorRicercaC(@RequestParam String partiteSvolte, Model model) {
+		List<MajorModel> tornei = majorRepo.findByTorneoMajorVincitrice_NumeroPartite(Long.parseLong(partiteSvolte));	
+		model.addAttribute("majors", tornei);
+        return "majors";
+	}
 	@RequestMapping(value="/modificaMajor/{majorId}",method=RequestMethod.GET)
 	public String modifyMajor(@PathVariable Long majorId,Model model) {
 		model.addAttribute("azioneMajor", "modifica");

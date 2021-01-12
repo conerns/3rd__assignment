@@ -70,6 +70,8 @@ public class GiocatoreController {
 			if(giocatore.getSquadra()!=null) { // ma aveva una squadra
 				removePlayer = teamRepo.findById(giocatore.getSquadra().getId()).orElse(null);
 				removePlayer.getComponenti().remove(giocatore); //lo rimuovo dalla squadra attuale
+				removePlayer.setDimensioneSquadra(removePlayer.getDimensioneSquadra()-1);
+				// vince.setNumeroMajorVinte(vince.getNumeroMajorVinte()+1);
 				giocatore.setSquadra(null); 
 				teamRepo.save(removePlayer);
 			}
@@ -83,13 +85,16 @@ public class GiocatoreController {
 					return "redirect:/giocatore/{playerId}";
 				//altrimenti, cambio squadra del giocatore
 				squadraAttuale.getComponenti().remove(giocatore);
+				squadraAttuale.setDimensioneSquadra(squadraAttuale.getDimensioneSquadra()-1);
 				removePlayer.getComponenti().add(giocatore); //lo rimuovo dalla squadra attuale
+				removePlayer.setDimensioneSquadra(removePlayer.getDimensioneSquadra()+1);
 				giocatore.setSquadra(removePlayer);
 				teamRepo.save(squadraAttuale);
 			}
 			else { //ho selezionato una squadra e non ne aveva una prima
 				removePlayer = teamRepo.findById(Long.parseLong(squadraId)).orElse(null);					
-				removePlayer.getComponenti().add(giocatore);					
+				removePlayer.getComponenti().add(giocatore);
+				removePlayer.setDimensioneSquadra(removePlayer.getDimensioneSquadra()+1);
 				giocatore.setSquadra(removePlayer);	
 				teamRepo.save(removePlayer);
 			}
@@ -107,6 +112,7 @@ public class GiocatoreController {
 		List<GiocatoreModel> amici = player.getAmici();		
 		if(eliminaGiocatore!=null) {
 			eliminaGiocatore.getComponenti().remove(player);
+			eliminaGiocatore.setDimensioneSquadra(eliminaGiocatore.getDimensioneSquadra()-1);
 			teamRepo.save(eliminaGiocatore);
 		}
 		if(amici!=null) {

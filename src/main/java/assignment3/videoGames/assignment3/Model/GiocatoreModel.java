@@ -24,7 +24,7 @@ public class GiocatoreModel {
 	private SquadraModel squadra;
 	
 	@ManyToMany
-	private List<GiocatoreModel> amici;	
+	private List<GiocatoreModel> amici;
 	
 	
 	public GiocatoreModel() {
@@ -41,9 +41,6 @@ public class GiocatoreModel {
 	}
 	public void setCognome(String cognome) {
 		Cognome = cognome;
-	}
-	public void setId(long id) {
-		this.id = id;
 	}
 	public void setNome(String nome) {
 		Nome = nome;
