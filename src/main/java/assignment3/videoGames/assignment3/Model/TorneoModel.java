@@ -15,6 +15,7 @@ public class TorneoModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String nomeTorneo; 
+	private long numeroPartite = 0;
 	@OneToOne
 	private SquadraModel vincitrice;
 	@OneToMany
@@ -24,10 +25,11 @@ public class TorneoModel {
 	public TorneoModel() {
 		super();
 	}
-	public TorneoModel(String nomeTorneo,List<PartitaModel> partiteTorneo, SquadraModel squadraVincente, MajorModel majorAppartenenza) {
+	public TorneoModel(String nomeTorneo, List<PartitaModel> partiteTorneo, SquadraModel squadraVincente, MajorModel majorAppartenenza) {
 		super();
 		this.nomeTorneo = nomeTorneo;
 		this.partiteTorneo = partiteTorneo;
+		if(partiteTorneo!=null) numeroPartite = partiteTorneo.size();
 		majorAppartenenza.setTorneoMajor(this);
 		this.majorAppartenenza = majorAppartenenza;
 		this.vincitrice = squadraVincente;
@@ -40,9 +42,6 @@ public class TorneoModel {
 	}
 	public long getId() {
 		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
 	}
 	public String getNomeTorneo() {
 		return nomeTorneo;
@@ -67,5 +66,11 @@ public class TorneoModel {
 	}
 	public void setMajorAppartenenza(MajorModel majorAppartenenza) {
 		this.majorAppartenenza = majorAppartenenza;
+	}
+	public void setNumeroPartite(long numeroPartite) {
+		this.numeroPartite = numeroPartite;
+	}
+	public long getNumeroPartite() {
+		return numeroPartite;
 	}
 }

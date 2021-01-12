@@ -10,15 +10,23 @@
 	<nav class="navbar navbar-light bg-light">
 	  <div class="container-fluid">
 	    <span class="navbar-brand mb-0 h1">Lista dei tornei</span>
-	  </div>
-	  <form class="container-fluid">
-	    <div class="input-group">
-	      <span class="input-group-text" id="basic-addon1">@</span>
-	      <input type="text" class="form-control" placeholder="Cerca Torneo" aria-label="Username" aria-describedby="basic-addon1">
-	    </div>
- 	 </form>
+	  </div>	    
 	</nav>
-	<table  class="table table-striped table-bordered " style="text-align:center">
+	<form th:action="@{/cercaT}" method="get" enctype="multipart/form-data" >
+	    <fieldset>
+			<div class="form-row">
+				<div class="form-group col-md-8 offset-md-1">
+					<label for="ricercaCom">Cerca tornei che hanno squadre vincitrici con X componenti</label>
+					<input type="number" class="form-control" placeholder="X" name="componenti" id="ricercaCom"/>
+				</div>
+				<div class="form-group col-md-2">
+					<label for="effettua"> . </label><br>
+					<button type="submit" class="btn btn-primary col-md-12" id="effettua">Effettua ricerca</button>
+				</div>
+			</div>	
+		</fieldset>
+	</form>	  	
+	<table  class="table table-striped table-bordered " style="text-align:center; margin-top:20px;">
 		<thead>
 			<th scope="col">Nome Torneo</th>			
 			<th scope="col">Squadra Vincitrice</th>

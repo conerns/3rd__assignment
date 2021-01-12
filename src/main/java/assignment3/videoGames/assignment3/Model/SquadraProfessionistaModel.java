@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 
 @Entity
 public class SquadraProfessionistaModel extends SquadraModel{
-	private long numeroMajorVinte = 0;
-	private long totalWinning = 0;
+	private long numeroMajorVinte;
+	private long totalWinning;
 	
 	public SquadraProfessionistaModel() {
 		super();

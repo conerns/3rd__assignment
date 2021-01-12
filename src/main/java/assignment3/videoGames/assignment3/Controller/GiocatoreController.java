@@ -1,5 +1,6 @@
 package assignment3.videoGames.assignment3.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class GiocatoreController {
 		model.addAttribute("GiocatoriLista", playerRepo.findAll());
 		return "giocatori";
 	}		
+	
 	@RequestMapping(value="/modificaGiocatore/{playerId}", method=RequestMethod.GET)
 	public String modificaPlayer( @PathVariable Long playerId, Model model) {
 		GiocatoreModel giocatore = playerRepo.findById(playerId).orElse(null);		 
@@ -68,29 +70,31 @@ public class GiocatoreController {
 			if(giocatore.getSquadra()!=null) { // ma aveva una squadra
 				removePlayer = teamRepo.findById(giocatore.getSquadra().getId()).orElse(null);
 				removePlayer.getComponenti().remove(giocatore); //lo rimuovo dalla squadra attuale
+				removePlayer.setDimensioneSquadra(removePlayer.getDimensioneSquadra()-1);
+				// vince.setNumeroMajorVinte(vince.getNumeroMajorVinte()+1);
 				giocatore.setSquadra(null); 
 				teamRepo.save(removePlayer);
 			}
-			//da verificare se non ha mai avuto squadre
 		}		
 		else { 
 			//ho una squadra selezionata			
 			if(giocatore.getSquadra()!=null) { // aveva una squadra prima 
 				removePlayer = teamRepo.findById(Long.parseLong(squadraId)).orElse(null); 
-				SquadraModel squadraAttuale = teamRepo.findById(giocatore.getSquadra().getId()).orElse(null);
-				
+				SquadraModel squadraAttuale = teamRepo.findById(giocatore.getSquadra().getId()).orElse(null);				
 				if(squadraAttuale.getId() == removePlayer.getId())//se è quella di prima non faccio nulla
 					return "redirect:/giocatore/{playerId}";
-				
 				//altrimenti, cambio squadra del giocatore
 				squadraAttuale.getComponenti().remove(giocatore);
+				squadraAttuale.setDimensioneSquadra(squadraAttuale.getDimensioneSquadra()-1);
 				removePlayer.getComponenti().add(giocatore); //lo rimuovo dalla squadra attuale
+				removePlayer.setDimensioneSquadra(removePlayer.getDimensioneSquadra()+1);
 				giocatore.setSquadra(removePlayer);
 				teamRepo.save(squadraAttuale);
 			}
 			else { //ho selezionato una squadra e non ne aveva una prima
 				removePlayer = teamRepo.findById(Long.parseLong(squadraId)).orElse(null);					
-				removePlayer.getComponenti().add(giocatore);					
+				removePlayer.getComponenti().add(giocatore);
+				removePlayer.setDimensioneSquadra(removePlayer.getDimensioneSquadra()+1);
 				giocatore.setSquadra(removePlayer);	
 				teamRepo.save(removePlayer);
 			}
@@ -108,6 +112,7 @@ public class GiocatoreController {
 		List<GiocatoreModel> amici = player.getAmici();		
 		if(eliminaGiocatore!=null) {
 			eliminaGiocatore.getComponenti().remove(player);
+			eliminaGiocatore.setDimensioneSquadra(eliminaGiocatore.getDimensioneSquadra()-1);
 			teamRepo.save(eliminaGiocatore);
 		}
 		if(amici!=null) {
@@ -124,8 +129,44 @@ public class GiocatoreController {
         GiocatoreModel nuovoGiocatore = new GiocatoreModel(nikname, nome, cognome);
         playerRepo.save(nuovoGiocatore);        
         return "redirect:/listaGiocatori";
-  }
+	}
 	
-
+	@RequestMapping(value="/aggiungiAmico/{playerId}")
+	public String aggiungiAmico(@PathVariable Long playerId, Model model) {
+		model.addAttribute("azionegiocatore", "nuovoAmico");
+		GiocatoreModel singolo = playerRepo.findById(playerId).orElse(null);
+		List<GiocatoreModel> daScegliere = new ArrayList<GiocatoreModel>();
+		for(GiocatoreModel tutti : playerRepo.findAll()) {
+			if(!tutti.getAmici().contains(singolo) && !daScegliere.contains(tutti)) 
+				daScegliere.add(tutti);			
+		}
+		daScegliere.remove(singolo);
+		model.addAttribute("giocatore", playerRepo.findById(playerId).orElse(null));
+		model.addAttribute("amiciScelta" , daScegliere);
+		return "azioniGiocatore";
+	}
+	@RequestMapping(value="/aggiungiAmicoOperazione/{playerId}")
+	public String aggiungiAmicoOp(@PathVariable Long playerId, 
+			@RequestParam String amicoId,
+			Model model) {
+		GiocatoreModel giocatore = playerRepo.findById(playerId).orElse(null);
+		GiocatoreModel amico = playerRepo.findById(Long.parseLong(amicoId)).orElse(null);
+		giocatore.getAmici().add(amico);
+		amico.getAmici().add(giocatore);
+		playerRepo.saveAll(List.of(giocatore,amico));
+		return "redirect:/giocatore/{playerId}";
+	}
+	@RequestMapping(value="/eliminaAmico/{togliA}/{togliB}")
+	public String aggiungiAmicoOp(@PathVariable Long togliA,
+			@PathVariable Long togliB,
+			Model model) {
+		GiocatoreModel giocatore = playerRepo.findById(togliA).orElse(null);
+		GiocatoreModel amico = playerRepo.findById(togliB).orElse(null);
+		giocatore.getAmici().remove(amico);
+		amico.getAmici().remove(giocatore);
+		playerRepo.saveAll(List.of(giocatore,amico));
+		return "redirect:/giocatore/{togliA}";
+	}
+	
 }
 

@@ -8,16 +8,24 @@
 </head>
 <body>
 	<nav class="navbar navbar-light bg-light">
-	  <div class="container-fluid">
-	    <span class="navbar-brand mb-0 h1">Majors</span>
-	  </div>
-	  <form class="container-fluid">
-	    <div class="input-group">
-	      <span class="input-group-text" id="basic-addon1">@</span>
-	      <input type="text" class="form-control" placeholder="Cerca Majors" aria-label="Username" aria-describedby="basic-addon1">
-	    </div>
- 	 </form>
+	  	<div class="container-fluid">
+	    	<span class="navbar-brand mb-0 h1">Majors</span>
+	  	</div>	  
 	</nav>
+	  <form th:action="@{/majorsC}" method="get" enctype="multipart/form-data" >
+	    <fieldset>
+			<div class="form-row">
+				<div class="form-group col-md-8 offset-md-1">
+					<label for="ricercaCom">Cerca le major all'interno delle quali è presente un Torneo con X partite svolte</label>
+					<input type="number" class="form-control" placeholder="X" name="partiteSvolte" id="ricercaCom"/>
+				</div>
+				<div class="form-group col-md-2">
+					<label for="effettua"> . </label><br>
+					<button type="submit" class="btn btn-primary col-md-12" id="effettua">Effettua ricerca</button>
+				</div>
+			</div>	
+		</fieldset>
+	</form>	
 	<table  class="table table-striped table-bordered" style="text-align:center">
 		<thead >
 			<th scope="col">Organizzatore evento</th>			
@@ -46,7 +54,7 @@
 		<nav class="navbar navbar-light bg-light">
 	  		<div class="container-fluid">
 	    <a class="navbar-brand" th:href="@{/}">Home</a>
-	    <a href="#">Crea</a>
+	    <a th:href="@{/inserimentoMajor}">Crea major</a>
 	  </div>
 	</nav>
 	</footer>

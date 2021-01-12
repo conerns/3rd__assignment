@@ -32,12 +32,6 @@ public class PartitaModel {
 		this.home = home;
 		this.against = against;
 	}
-	/**
-	 * Storico delle partite di un giocatore
-	 * */
-	public PartitaModel(GiocatoreModel giocatore, int homeRounds, int againstRounds) {
-		super();		
-	}
 	
 	public int getHomeRounds() {
 		return homeRounds;
